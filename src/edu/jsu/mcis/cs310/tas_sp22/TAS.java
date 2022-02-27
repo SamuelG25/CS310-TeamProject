@@ -1,14 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Ruri Figueroa, Samuel Goldthreate, Bless Vincent
+
 package edu.jsu.mcis.cs310.tas_sp22;
 
-/**
- *
- * @author 
- */
+
 public class TAS {
+
+    
+    public static void main(String[] args) {
+        TASDatabase db = new TASDatabase();
+        
+        if (db.isConnected()){
+            System.out.println("Connectedd");
+        }
+        
+    }
     
 }

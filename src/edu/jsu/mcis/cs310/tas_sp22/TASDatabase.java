@@ -1,14 +1,76 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.jsu.mcis.cs310.tas_sp22;
 
-/**
- *
- * @author 
- */
+import java.sql.*;
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
 public class TASDatabase {
+    
+    private final String username;
+    private final String password;
+    private final String address;
+    private final Connection connection;
+    
+    public TASDatabase() {
+        this.address = "localhost";
+        this.username = "tasuser";
+        this.password = "WarRoomF";
+        this.connection = openConnection (username,password, address);
+        
+    }
+    
+    public String Test (){
+        String result = null;
+        
+        
+        
+       
+       return result;
+    }
+    
+    private Connection openConnection(String u, String p, String a) {
+        
+        Connection c = null;
+        
+        if (a.equals("") || u.equals("") || p.equals(""))
+            
+            System.err.println("*** ERROR: MUST SPECIFY ADDRESS/USERNAME/PASSWORD BEFORE OPENING DATABASE CONNECTION ***");
+        
+        else {
+        
+            try {
+
+                String url = "jdbc:mysql://" + a + "/tas_sp22_v1?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=EXCEPTION&serverTimezone=America/Chicago";
+                
+
+                c = DriverManager.getConnection(url, u, p);
+
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        
+        }
+        
+        return c;
+        
+    }
+    
+    public boolean isConnected() {
+
+        boolean result = false;
+        
+        try {
+            
+            if ( !(connection == null) )
+                
+                result = !(connection.isClosed());
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return result;
+        
+    }
+    
     
 }
