@@ -68,7 +68,6 @@ public class TASDatabase {
     public Badge getBadge(String badgeid){
         
         ResultSet resultset;
-        String id;
         String desc = null;
         
         try {
@@ -84,7 +83,7 @@ public class TASDatabase {
                     desc = resultset.getString("description");
             }
             
-        } catch (SQLException ex) {}
+        } catch (SQLException ex) {};
         
     Badge b1 = new Badge(badgeid,desc);
     
