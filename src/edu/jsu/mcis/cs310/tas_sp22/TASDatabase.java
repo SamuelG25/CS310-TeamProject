@@ -2,6 +2,8 @@
 package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -18,15 +20,6 @@ public class TASDatabase {
         this.password = "WarRoomF";
         this.connection = openConnection (username,password, address);
         
-    }
-    
-    public String Test (){
-        String result = null;
-        
-        
-        
-       
-       return result;
     }
     
     private Connection openConnection(String u, String p, String a) {
@@ -69,8 +62,33 @@ public class TASDatabase {
         catch (Exception e) { e.printStackTrace(); }
         
         return result;
-        
+     
     }
     
+    public Badge getBadge(String badgeid){
+        
+        ResultSet resultset;
+        String id;
+        String desc = null;
+        
+        try {
+            String query = "SELECT * FROM badge WHERE id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, badgeid);
+            
+            boolean hasresults = pstmt.execute();
+            
+                if ( hasresults ){
+                    resultset = pstmt.getResultSet();
+                    resultset.next();
+                    desc = resultset.getString("description");
+            }
+            
+        } catch (SQLException ex) {}
+        
+    Badge b1 = new Badge(badgeid,desc);
+    
+    return b1;        
+    }
     
 }

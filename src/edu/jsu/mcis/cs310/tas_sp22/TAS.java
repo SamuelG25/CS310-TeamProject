@@ -10,7 +10,7 @@ public class TAS {
         TASDatabase db = new TASDatabase();
         
         if (db.isConnected()){
-            System.out.println("Connectedd");
+            System.out.println("Connected");
         }
         
     }
