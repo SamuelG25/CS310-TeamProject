@@ -1,6 +1,7 @@
 
 package edu.jsu.mcis.cs310.tas_sp22;
 
+import java.util.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,27 +68,120 @@ public class TASDatabase {
     
     public Badge getBadge(String badgeid){
         
-        ResultSet resultset;
+        
         String desc = null;
         
+            try {
+                String query = "SELECT * FROM badge WHERE id=?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setString(1, badgeid);
+            
+                boolean hasresults = pstmt.execute();
+            
+                    if ( hasresults ){
+                        ResultSet resultset = pstmt.getResultSet();
+                        resultset.next();
+                        desc = resultset.getString("description");
+                        resultset.close( );
+                    } 
+                
+                pstmt.close( );
+                connection.close( );
+            } catch (SQLException ex) {};
+    
+        Badge b1 = new Badge(badgeid,desc);
+        return b1;        
+    }
+    
+    public Employee GetEmployee(int Id){
+        
+        LinkedHashMap <String, String > results = new LinkedHashMap<>();
+        
         try {
-            String query = "SELECT * FROM badge WHERE id=?";
+            String query = "SELECT * FROM employee WHERE id=?";
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, badgeid);
+            pstmt.setInt(1, Id);
             
             boolean hasresults = pstmt.execute();
             
                 if ( hasresults ){
-                    resultset = pstmt.getResultSet();
+                    ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
-                    desc = resultset.getString("description");
-            }
-            
+                    String id = resultset.getString("badgeid");
+                    String Fname = resultset.getString("firstname");
+                    String Mname = resultset.getString("middlename");
+                    String Lname = resultset.getString("lastname");
+                    String EmpType = resultset.getString("employeetypeid");
+                    String DepType = resultset.getString("departmentid");
+                    String Shiftid = resultset.getString("shiftid");
+                    String active = resultset.getString("active");
+                    String inactive = resultset.getString("inactive");
+                    
+                    results.put("badgeid",id);
+                    results.put("firstname",Fname);
+                    results.put("middlename",Mname);
+                    results.put("lastname",Lname);
+                    results.put("employeetypeid",EmpType);
+                    results.put("departmentid",DepType);
+                    results.put("shiftid",Shiftid);
+                    results.put("active",active);
+                    results.put("inactive",inactive);
+                    
+                    resultset.close();    
+                    System.out.println(results);
+                }
+                
+            pstmt.close( );
+            connection.close( );
         } catch (SQLException ex) {};
         
-    Badge b1 = new Badge(badgeid,desc);
-    
-    return b1;        
+        Employee Emp = new Employee();
+        return Emp;
     }
     
+    public Employee GetEmployee(String Id){
+        
+        LinkedHashMap <String, String > results = new LinkedHashMap<>();
+        
+        try {
+            String query = "SELECT * FROM employee WHERE badgeid=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString (1, Id);
+            
+            boolean hasresults = pstmt.execute();
+            
+                if ( hasresults ){
+                    ResultSet resultset = pstmt.getResultSet();
+                    resultset.next();
+                    String ID = resultset.getString("badgeid");
+                    String Fname = resultset.getString("firstname");
+                    String Mname = resultset.getString("middlename");
+                    String Lname = resultset.getString("lastname");
+                    String EmpType = resultset.getString("employeetypeid");
+                    String DepType = resultset.getString("departmentid");
+                    String Shiftid = resultset.getString("shiftid");
+                    String active = resultset.getString("active");
+                    String inactive = resultset.getString("inactive");
+                    
+                    results.put("badgeid",ID);
+                    results.put("firstname",Fname);
+                    results.put("middlename",Mname);
+                    results.put("lastname",Lname);
+                    results.put("employeetypeid",EmpType);
+                    results.put("departmentid",DepType);
+                    results.put("shiftid",Shiftid);
+                    results.put("active",active);
+                    results.put("inactive",inactive);
+                    
+                    resultset.close();
+                    System.out.println(results);
+                }
+                
+            pstmt.close( );
+            connection.close( );
+        } catch (SQLException ex) {};
+        
+        Employee Emp = new Employee();
+        return Emp;
+    }
 }

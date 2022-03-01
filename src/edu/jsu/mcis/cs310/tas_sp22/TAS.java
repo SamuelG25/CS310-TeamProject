@@ -12,7 +12,7 @@ public class TAS {
         if (db.isConnected()){
             System.out.println("Connected");
         }
-        
+        db.GetEmployee(2);
     }
     
 }
