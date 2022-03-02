@@ -107,7 +107,7 @@ public class TASDatabase {
                 if ( hasresults ){
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
-                    String id = resultset.getString("badgeid");
+                    String badgeid = resultset.getString("badgeid");
                     String Fname = resultset.getString("firstname");
                     String Mname = resultset.getString("middlename");
                     String Lname = resultset.getString("lastname");
@@ -117,7 +117,7 @@ public class TASDatabase {
                     String active = resultset.getString("active");
                     String inactive = resultset.getString("inactive");
                     
-                    results.put("badgeid",id);
+                    results.put("badgeid",badgeid);
                     results.put("firstname",Fname);
                     results.put("middlename",Mname);
                     results.put("lastname",Lname);
@@ -127,7 +127,7 @@ public class TASDatabase {
                     results.put("active",active);
                     results.put("inactive",inactive);
                     
-                    resultset.close();    
+                    resultset.close();   
                     System.out.println(results);
                 }
                 
@@ -139,8 +139,9 @@ public class TASDatabase {
         return Emp;
     }
     
-    public Employee GetEmployee(String Id){
+    public Employee GetEmployee(Badge b1){
         
+        String Id = b1.getBadgeId();
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
         
         try {
@@ -153,7 +154,7 @@ public class TASDatabase {
                 if ( hasresults ){
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
-                    String ID = resultset.getString("badgeid");
+                    String badgeID = resultset.getString("badgeid");
                     String Fname = resultset.getString("firstname");
                     String Mname = resultset.getString("middlename");
                     String Lname = resultset.getString("lastname");
@@ -163,7 +164,7 @@ public class TASDatabase {
                     String active = resultset.getString("active");
                     String inactive = resultset.getString("inactive");
                     
-                    results.put("badgeid",ID);
+                    results.put("badgeid",badgeID);
                     results.put("firstname",Fname);
                     results.put("middlename",Mname);
                     results.put("lastname",Lname);

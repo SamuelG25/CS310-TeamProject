@@ -9,9 +9,8 @@ public class TAS {
     public static void main(String[] args) {
         TASDatabase db = new TASDatabase();
         
-        if (db.isConnected()){
-            System.out.println("Connected");
-        }
+        if (db.isConnected())System.out.println("Connected");
+        Badge b1 = db.getBadge("12565C60");
         db.GetEmployee(2);
     }
     
