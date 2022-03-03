@@ -87,13 +87,14 @@ public class TASDatabase {
                 
                 pstmt.close( );
                 connection.close( );
+                
             } catch (SQLException ex) {};
     
         Badge b1 = new Badge(badgeid,desc);
         return b1;        
     }
     
-    public Employee GetEmployee(int Id){
+    public Employee getEmployee(int Id){
         
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
         
@@ -107,6 +108,7 @@ public class TASDatabase {
                 if ( hasresults ){
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
+                    
                     String badgeid = resultset.getString("badgeid");
                     String Fname = resultset.getString("firstname");
                     String Mname = resultset.getString("middlename");
@@ -117,31 +119,33 @@ public class TASDatabase {
                     String active = resultset.getString("active");
                     String inactive = resultset.getString("inactive");
                     
-                    results.put("badgeid",badgeid);
-                    results.put("firstname",Fname);
-                    results.put("middlename",Mname);
-                    results.put("lastname",Lname);
-                    results.put("employeetypeid",EmpType);
-                    results.put("departmentid",DepType);
+                    results.put("badgeID",badgeid);
+                    results.put("Fname",Fname);
+                    results.put("Mname",Mname);
+                    results.put("Lname",Lname);
+                    results.put("EmpType",EmpType);
+                    results.put("DepType",DepType);
                     results.put("shiftid",Shiftid);
                     results.put("active",active);
                     results.put("inactive",inactive);
                     
-                    resultset.close();   
-                    System.out.println(results);
+                    resultset.close();
                 }
                 
             pstmt.close( );
             connection.close( );
-        } catch (SQLException ex) {};
+        } catch (SQLException ex) {}
         
-        Employee Emp = new Employee();
+        System.out.println(results);
+        Employee Emp = new Employee(results);
         return Emp;
     }
     
-    public Employee GetEmployee(Badge b1){
+    
+    public Employee getEmployee(Badge b1){
         
         String Id = b1.getBadgeId();
+        
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
         
         try {
@@ -154,6 +158,8 @@ public class TASDatabase {
                 if ( hasresults ){
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
+                    
+                    String ID = resultset.getString("id");
                     String badgeID = resultset.getString("badgeid");
                     String Fname = resultset.getString("firstname");
                     String Mname = resultset.getString("middlename");
@@ -173,16 +179,18 @@ public class TASDatabase {
                     results.put("shiftid",Shiftid);
                     results.put("active",active);
                     results.put("inactive",inactive);
+                    results.put("id", ID);
                     
-                    resultset.close();
-                    System.out.println(results);
+                    //resultset.close();
                 }
                 
             pstmt.close( );
             connection.close( );
-        } catch (SQLException ex) {};
+        } catch (SQLException ex) {}
         
-        Employee Emp = new Employee();
+        System.out.println(results);
+        Employee Emp = new Employee(results);
         return Emp;
     }
+    
 }

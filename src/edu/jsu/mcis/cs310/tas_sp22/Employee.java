@@ -16,14 +16,18 @@ public class Employee {
     {
         
         this.badgeid = params.get("badgeID");
-        this.firstname = firstname;
-        this.middlename = middlename;
-        this.lastname = lastname;
+        this.firstname = params.get("firstname");
+        this.middlename = params.get("middlename");
+        this.lastname = params.get("lastname");
         this.employeetypeid = Integer.parseInt(params.get("employeetypeid"));
         this.departmentid = Integer.parseInt(params.get("departmentid"));
         this.id = Integer.parseInt(params.get("id"));
-        this.shiftid = shiftid;
-        this.active = LocalDateTime.parse(params.get("active"));
+        this.shiftid = params.get("shiftid");
+        
+        if ((params.get("active")) != null) {this.active = LocalDateTime.parse(params.get("active"));}
+        else{this.active = null;}
+        
+        if ((params.get("inactive")) == null) {this.active = null;}
         this.inactive = LocalDateTime.parse(params.get("inactive"));
     }
 
@@ -43,11 +47,11 @@ public class Employee {
         return lastname;
     }
 
-    public String getEmpType() {
+    public int getEmpType() {
         return employeetypeid;
     }
 
-    public String getDepType() {
+    public int getDepType() {
         return departmentid;
     }
 
@@ -55,11 +59,11 @@ public class Employee {
         return shiftid;
     }
 
-    public String getActive() {
+    public LocalDateTime getActive() {
         return active;
     }
 
-    public String getInactive() {
+    public LocalDateTime getInactive() {
         return inactive;
     }
             
@@ -71,8 +75,16 @@ public class Employee {
         s.append('(').append(lastname).append(',');
         s.append('(').append(firstname).append(' ');
         s.append('(').append(middlename).append(')');
-        s.append(':').append(employeetypeid).append(':');
-        s.append(',')
+        s.append(':').append("employeetypeid").append(':');
+        s.append(' ').append(employeetypeid).append(",");
+        s.append(' ').append("departmentid").append(':');
+        s.append(' ').append(departmentid).append(",");
+        s.append(' ').append("shiftid").append(':');
+        s.append(' ').append(shiftid).append(",");
+        s.append(' ').append("active").append(':');
+        s.append(' ').append(active).append(",");
+        s.append(' ').append("inactive").append(':');
+        s.append(' ').append(inactive).append(",");
         
         return s.toString();
     }
