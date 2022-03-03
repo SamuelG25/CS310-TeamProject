@@ -11,7 +11,7 @@ public class TAS {
         
         if (db.isConnected())System.out.println("Connected");
         Badge b1 = db.getBadge("12565C60");
-        db.getEmployee(b1);
+        db.getEmployee(7);
     }
     
 }
