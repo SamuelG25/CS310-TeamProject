@@ -135,7 +135,7 @@ public class TASDatabase {
                 }    
         } catch (SQLException ex) {}
     
-    System.out.println(results);    
+        
     Employee Emp = new Employee(results);
     return Emp;        
     }
@@ -183,9 +183,114 @@ public class TASDatabase {
                     resultset.close();
                 }    
         } catch (SQLException ex) {}
-        System.out.println(results);
+        
         Employee Emp = new Employee(results);
         return Emp;
+    }
+    
+    public Shift getShift(int id){
+        
+        
+        LinkedHashMap <String, String > results = new LinkedHashMap<>();
+        
+        try {
+            String query = "SELECT * FROM shift WHERE id=? ";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt (1, id);
+            
+            
+             boolean hasresults = pstmt.execute();
+            
+                if ( hasresults ){
+                    ResultSet resultset = pstmt.getResultSet();
+                    resultset.next();
+                    
+                    String desc = resultset.getString("description");
+                    String shiftstart = resultset.getString("shiftstart");
+                    String shiftstop = resultset.getString("shiftstop");
+                    String roundinterval = resultset.getString("roundinterval");
+                    String graceperiod = resultset.getString("graceperiod");
+                    String dockpenalty = resultset.getString("dockpenalty");
+                    String lunchstart = resultset.getString("lunchstart");
+                    String lunchstop = resultset.getString("lunchstop");
+                    String lunchthreshold = resultset.getString("lunchthreshold");
+                    
+                    results.put("description",desc);
+                    results.put("shiftstart",shiftstart);
+                    results.put("shiftstop",shiftstop);
+                    results.put("roundinterval",roundinterval);
+                    results.put("graceperiod",graceperiod);
+                    results.put("dockpenalty",dockpenalty);
+                    results.put("lunchstart",lunchstart);
+                    results.put("lunchstop",lunchstop);
+                    results.put("lunchthreshold",lunchthreshold);
+                    
+                    resultset.close();
+                }
+        }catch (SQLException ex) {}
+        
+        
+        
+        Shift s1 = new Shift(results);
+        return s1;
+    }
+    
+    public Shift getShift(Badge b1){
+        int shiftid = 0;
+        String Id = b1.getBadgeId();
+        
+        try {
+                String query = "SELECT * FROM employee WHERE badgeid=?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setString(1, Id);
+            
+                boolean hasresults = pstmt.execute();
+            
+                    if ( hasresults ){
+                        ResultSet resultset = pstmt.getResultSet();
+                        resultset.next();
+                        shiftid = resultset.getInt("shiftid");
+                        resultset.close( );
+                    } 
+                
+               
+            } catch (SQLException ex) {}
+        return getShift(shiftid);
+    }
+    
+    public Punch getPunch(int punch){
+        
+        LinkedHashMap <String, String > results = new LinkedHashMap<>();
+        
+        try {
+                String query = "SELECT * FROM event WHERE id=?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setInt(1, punch);
+                
+                 boolean hasresults = pstmt.execute();
+            
+                    if ( hasresults ){
+                        ResultSet resultset = pstmt.getResultSet();
+                        resultset.next();
+                        
+                        String badge = resultset.getString("badgeid");
+                        String terminal = resultset.getString("terminalid");
+                        String time = resultset.getString("timestamp");
+                        String event = resultset.getString("eventtypeid");
+                        
+                        results.put("badgeid",badge);
+                        results.put("terminalid",terminal);
+                        results.put("timestamp",time);
+                        results.put("eventtypeid",event);
+                        
+                        resultset.close();
+                    }
+                
+                
+        } catch (SQLException ex) {}
+        
+        Punch p1 = new Punch(results);
+        return p1;
     }
     
 }
