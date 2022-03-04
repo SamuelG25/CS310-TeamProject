@@ -15,10 +15,10 @@ public class Punch {
     private LocalTime adjustedTimeStamp;
 
     public Punch(LinkedHashMap<String,String> param) {
-        this.badgeID = ("badgeid");
-        this.terminalID = Integer.parseInt("terminalid");
-        this.eventType = PunchType.values()[Integer.parseInt("eventtypeid")];
-        this.originalTimeStamp = LocalDateTime.parse(("timestamp"),DateTimeFormatter.ofPattern("EEE MM-dd-yyyy HH:mm:ss"));
+        this.badgeID = param.get("badgeid");
+        this.terminalID = Integer.parseInt(param.get("terminalid"));
+        this.eventType = PunchType.values()[Integer.parseInt(param.get("eventtypeid"))];
+        this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"));
         this.adjustedTimeStamp = null;
         this.ID = 0;
     }
@@ -47,8 +47,8 @@ public class Punch {
         return adjustedTimeStamp;
     }
     
-    @Override
-    public String toString(){
+    
+    public String printOriginal(){
         StringBuilder s = new StringBuilder();
         
         s.append('#').append(badgeID);

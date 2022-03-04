@@ -258,9 +258,9 @@ public class TASDatabase {
         return getShift(shiftid);
     }
     
-    public Punch getPunch(int punch){
+    public Punch  getPunch(int punch){
         
-        LinkedHashMap <String, String > results = new LinkedHashMap<>();
+        LinkedHashMap <String, String > result = new LinkedHashMap<>();
         
         try {
                 String query = "SELECT * FROM event WHERE id=?";
@@ -278,10 +278,10 @@ public class TASDatabase {
                         String time = resultset.getString("timestamp");
                         String event = resultset.getString("eventtypeid");
                         
-                        results.put("badgeid",badge);
-                        results.put("terminalid",terminal);
-                        results.put("timestamp",time);
-                        results.put("eventtypeid",event);
+                        result.put("badgeid", badge);
+                        result.put("terminalid", terminal);
+                        result.put("timestamp", time);
+                        result.put("eventtypeid", event);
                         
                         resultset.close();
                     }
@@ -289,7 +289,8 @@ public class TASDatabase {
                 
         } catch (SQLException ex) {}
         
-        Punch p1 = new Punch(results);
+        
+        Punch p1 = new Punch(result);
         return p1;
     }
     
