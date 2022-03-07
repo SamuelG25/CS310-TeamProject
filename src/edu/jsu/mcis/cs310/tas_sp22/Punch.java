@@ -4,6 +4,7 @@ import java.security.Timestamp;
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 
 
 public class Punch {
@@ -18,7 +19,7 @@ public class Punch {
         this.badgeID = param.get("badgeid");
         this.terminalID = Integer.parseInt(param.get("terminalid"));
         this.eventType = PunchType.values()[Integer.parseInt(param.get("eventtypeid"))];
-        this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"));
+        this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.adjustedTimeStamp = null;
         this.ID = 0;
     }
@@ -48,14 +49,20 @@ public class Punch {
     }
     
     
-    public String printOriginal(){
+    public String printOriginal() {
+        
+        // "#D2C39273 CLOCK IN: WED 09/05/2018 07:00:07"
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+        
         StringBuilder s = new StringBuilder();
         
         s.append('#').append(badgeID);
         s.append(" ").append(eventType);
-        s.append(": ").append(originalTimeStamp);
+        s.append(": ").append(dtf.format(originalTimeStamp));
+        
 
-        return s.toString();
+        return s.toString().toUpperCase();
     }
     
 }

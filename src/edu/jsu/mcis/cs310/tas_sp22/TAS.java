@@ -11,7 +11,10 @@ public class TAS {
         
         if (db.isConnected())System.out.println("Connected");
         Badge b1 = db.getBadge("12565C60");
-        db.getPunch(3433);
+        Punch p1 = db.getPunch(3433);
+        
+        
+        
         
     }
     
