@@ -3,6 +3,8 @@ package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.util.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.*;
@@ -294,4 +296,30 @@ public class TASDatabase {
         return p1;
     }
     
+    public void getDailyPunchList(Badge badge, LocalDate date){
+        String time;
+        
+        String ID = badge.getBadgeId();
+        java.sql.Timestamp ts = java.sql.Timestamp.valueOf(date.atTime(0, 0));
+        
+        try {
+            
+            String query = "SELECT * FROM event WHERE badgeid=? AND timestamp=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, ID);
+            pstmt.setTimestamp(2, ts);
+            boolean hasresults = pstmt.execute();
+            
+            if ( hasresults ){
+                ResultSet resultset = pstmt.getResultSet();
+                resultset.next();
+                
+                time = resultset.getString("timestamp");
+                System.out.println(time);
+            }
+            
+        
+        }catch (SQLException ex) {}
+    
+    }
 }
