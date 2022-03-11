@@ -90,8 +90,8 @@ public class TASDatabase {
                
             } catch (SQLException ex) {};
     
-        Badge b1 = new Badge(badgeid,desc);
-        return b1;        
+    Badge b1 = new Badge(badgeid,desc);
+    return b1;        
     }
     
     public Employee getEmployee(int Id){
@@ -111,30 +111,20 @@ public class TASDatabase {
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
                     
-                    String ID = resultset.getString("id");
-                    String badgeid = resultset.getString("badgeid");
-                    String Fname = resultset.getString("firstname");
-                    String Mname = resultset.getString("middlename");
-                    String Lname = resultset.getString("lastname");
-                    String Emptype = resultset.getString("employeetypeid");
-                    String DepType = resultset.getString("departmentid");
-                    String Shiftid = resultset.getString("shiftid");
-                    String active = resultset.getString("active");
-                    String inactive = resultset.getString("inactive");
-                    
-                    results.put("badgeid",badgeid);
-                    results.put("firstname",Fname);
-                    results.put("middlename",Mname);
-                    results.put("lastname",Lname);
-                    results.put("employeetypeid",Emptype);
-                    results.put("departmentid",DepType);
-                    results.put("shiftid",Shiftid);
-                    results.put("active",active);
-                    results.put("inactive",inactive);
-                    results.put("id", ID);
+                    results.put("badgeid",resultset.getString("badgeid"));
+                    results.put("firstname",resultset.getString("firstname"));
+                    results.put("middlename",resultset.getString("middlename"));
+                    results.put("lastname",resultset.getString("lastname"));
+                    results.put("employeetypeid",resultset.getString("employeetypeid"));
+                    results.put("departmentid",resultset.getString("departmentid"));
+                    results.put("shiftid",resultset.getString("shiftid"));
+                    results.put("active",resultset.getString("active"));
+                    results.put("inactive",resultset.getString("inactive"));
+                    results.put("id", resultset.getString("id"));
                     
                     resultset.close();
-                }    
+                }
+                
         } catch (SQLException ex) {}
     
         
@@ -160,34 +150,23 @@ public class TASDatabase {
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
                     
-                    String ID = resultset.getString("id");
-                    String badgeID = resultset.getString("badgeid");
-                    String Fname = resultset.getString("firstname");
-                    String Mname = resultset.getString("middlename");
-                    String Lname = resultset.getString("lastname");
-                    String EmpType = resultset.getString("employeetypeid");
-                    String DepType = resultset.getString("departmentid");
-                    String Shiftid = resultset.getString("shiftid");
-                    String active = resultset.getString("active");
-                    String inactive = resultset.getString("inactive");
-                    
-                    results.put("badgeid",badgeID);
-                    results.put("firstname",Fname);
-                    results.put("middlename",Mname);
-                    results.put("lastname",Lname);
-                    results.put("employeetypeid",EmpType);
-                    results.put("departmentid",DepType);
-                    results.put("shiftid",Shiftid);
-                    results.put("active",active);
-                    results.put("inactive",inactive);
-                    results.put("id", ID);
+                    results.put("badgeid",resultset.getString("badgeid"));
+                    results.put("firstname",resultset.getString("firstname"));
+                    results.put("middlename",resultset.getString("middlename"));
+                    results.put("lastname",resultset.getString("lastname"));
+                    results.put("employeetypeid",resultset.getString("employeetypeid"));
+                    results.put("departmentid",resultset.getString("departmentid"));
+                    results.put("shiftid",resultset.getString("shiftid"));
+                    results.put("active",resultset.getString("active"));
+                    results.put("inactive",resultset.getString("inactive"));
+                    results.put("id", resultset.getString("id"));
                     
                     resultset.close();
                 }    
         } catch (SQLException ex) {}
         
-        Employee Emp = new Employee(results);
-        return Emp;
+    Employee Emp = new Employee(results);
+    return Emp;
     }
     
     public Shift getShift(int id){
@@ -196,45 +175,35 @@ public class TASDatabase {
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
         
         try {
-            String query = "SELECT * FROM shift WHERE id=? ";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setInt (1, id);
+                String query = "SELECT * FROM shift WHERE id=? ";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setInt (1, id);
             
             
-             boolean hasresults = pstmt.execute();
+                boolean hasresults = pstmt.execute();
             
-                if ( hasresults ){
-                    ResultSet resultset = pstmt.getResultSet();
-                    resultset.next();
+                    if ( hasresults ){
+                        ResultSet resultset = pstmt.getResultSet();
+                        resultset.next();
                     
-                    String desc = resultset.getString("description");
-                    String shiftstart = resultset.getString("shiftstart");
-                    String shiftstop = resultset.getString("shiftstop");
-                    String roundinterval = resultset.getString("roundinterval");
-                    String graceperiod = resultset.getString("graceperiod");
-                    String dockpenalty = resultset.getString("dockpenalty");
-                    String lunchstart = resultset.getString("lunchstart");
-                    String lunchstop = resultset.getString("lunchstop");
-                    String lunchthreshold = resultset.getString("lunchthreshold");
+                        results.put("description",resultset.getString("description"));
+                        results.put("shiftstart",resultset.getString("shiftstart"));
+                        results.put("shiftstop",resultset.getString("shiftstop"));
+                        results.put("roundinterval",resultset.getString("roundinterval"));
+                        results.put("graceperiod",resultset.getString("graceperiod"));
+                        results.put("dockpenalty",resultset.getString("dockpenalty"));
+                        results.put("lunchstart",resultset.getString("lunchstart"));
+                        results.put("lunchstop",resultset.getString("lunchstop"));
+                        results.put("lunchthreshold",resultset.getString("lunchthreshold"));
                     
-                    results.put("description",desc);
-                    results.put("shiftstart",shiftstart);
-                    results.put("shiftstop",shiftstop);
-                    results.put("roundinterval",roundinterval);
-                    results.put("graceperiod",graceperiod);
-                    results.put("dockpenalty",dockpenalty);
-                    results.put("lunchstart",lunchstart);
-                    results.put("lunchstop",lunchstop);
-                    results.put("lunchthreshold",lunchthreshold);
-                    
-                    resultset.close();
-                }
-        }catch (SQLException ex) {}
+                        resultset.close();
+                    }
+            }catch (SQLException ex) {}
         
         
         
-        Shift s1 = new Shift(results);
-        return s1;
+    Shift s1 = new Shift(results);
+    return s1;
     }
     
     public Shift getShift(Badge b1){
@@ -275,15 +244,10 @@ public class TASDatabase {
                         ResultSet resultset = pstmt.getResultSet();
                         resultset.next();
                         
-                        String badge = resultset.getString("badgeid");
-                        String terminal = resultset.getString("terminalid");
-                        String time = resultset.getString("timestamp");
-                        String event = resultset.getString("eventtypeid");
-                        
-                        result.put("badgeid", badge);
-                        result.put("terminalid", terminal);
-                        result.put("timestamp", time);
-                        result.put("eventtypeid", event);
+                        result.put("badgeid", resultset.getString("badgeid"));
+                        result.put("terminalid", resultset.getString("terminalid"));
+                        result.put("timestamp", resultset.getString("timestamp"));
+                        result.put("eventtypeid", resultset.getString("eventtypeid"));
                         
                         resultset.close();
                     }
@@ -292,13 +256,12 @@ public class TASDatabase {
         } catch (SQLException ex) {}
         
         
-        Punch p1 = new Punch(result);
-        return p1;
+    Punch p1 = new Punch(result);
+    return p1;
     }
     
     public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date){
         
-        String time;
         ArrayList<Punch> punches = new ArrayList();
         
         try{
@@ -311,26 +274,26 @@ public class TASDatabase {
             
             boolean hasresults = pstmt.execute(); 
             
-            if ( hasresults ){
+                if ( hasresults ){
                 
-                ResultSet resultset = pstmt.getResultSet();
-                resultset.next();
+                    ResultSet resultset = pstmt.getResultSet();
+                    resultset.next();
                 
-                do{
+                        do{
                     
-                    LinkedHashMap<String,String> param = new LinkedHashMap();
-                    param.put("badgeid", resultset.getString("badgeid"));
-                    param.put("terminalid", resultset.getString("terminalid"));
-                    param.put("timestamp", resultset.getString("timestamp"));
-                    param.put("eventtypeid", resultset.getString("eventtypeid"));
+                            LinkedHashMap<String,String> param = new LinkedHashMap();
+                            param.put("badgeid", resultset.getString("badgeid"));
+                            param.put("terminalid", resultset.getString("terminalid"));
+                            param.put("timestamp", resultset.getString("timestamp"));
+                            param.put("eventtypeid", resultset.getString("eventtypeid"));
                    
-                    punches.add(new Punch(param));
-                    
-                    }while(resultset.next());
+                            punches.add(new Punch(param));
+                            
+                        }while(resultset.next());
                 }
-            
-        }catch (Exception ex) {ex.printStackTrace();}    
-         
+                
+            }catch (Exception ex) {ex.printStackTrace();}
+        
     return punches;
     }
 }
