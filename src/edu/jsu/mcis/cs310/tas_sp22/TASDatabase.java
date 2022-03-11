@@ -296,30 +296,41 @@ public class TASDatabase {
         return p1;
     }
     
-    public void getDailyPunchList(Badge badge, LocalDate date){
+    public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date){
+        
         String time;
+        ArrayList<Punch> punches = new ArrayList();
         
-        String ID = badge.getBadgeId();
-        java.sql.Timestamp ts = java.sql.Timestamp.valueOf(date.atTime(0, 0));
-        
-        try {
+        try{
+            String query = "SELECT *, DATE(`timestamp`) AS tsdate FROM event "
+                    + "WHERE badgeid =? HAVING tsdate =? ORDER BY `timestamp`;";
             
-            String query = "SELECT * FROM event WHERE badgeid=? AND timestamp=?";
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, ID);
-            pstmt.setTimestamp(2, ts);
-            boolean hasresults = pstmt.execute();
+            pstmt.setString(1, badge.getBadgeId());
+            pstmt.setDate(2,java.sql.Date.valueOf(date));
+            
+            boolean hasresults = pstmt.execute(); 
             
             if ( hasresults ){
+                
                 ResultSet resultset = pstmt.getResultSet();
                 resultset.next();
                 
-                time = resultset.getString("timestamp");
-                System.out.println(time);
-            }
+                do{
+                    
+                    LinkedHashMap<String,String> param = new LinkedHashMap();
+                    param.put("badgeid", resultset.getString("badgeid"));
+                    param.put("terminalid", resultset.getString("terminalid"));
+                    param.put("timestamp", resultset.getString("timestamp"));
+                    param.put("eventtypeid", resultset.getString("eventtypeid"));
+                   
+                    punches.add(new Punch(param));
+                    
+                    }while(resultset.next());
+                }
             
-        
-        }catch (SQLException ex) {}
-    
+        }catch (Exception ex) {ex.printStackTrace();}    
+         
+    return punches;
     }
 }

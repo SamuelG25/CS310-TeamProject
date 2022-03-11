@@ -13,7 +13,7 @@ public class TAS {
         TASDatabase db = new TASDatabase();
         
         if (db.isConnected())System.out.println("Connected");
-        Badge b1 = db.getBadge("12565C60");
+        Badge b1 = db.getBadge("4E6E296E");
         Punch p1 = db.getPunch(3433);
         LocalDate ts = LocalDate.of(2018, Month.SEPTEMBER, 10);
         
