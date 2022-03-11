@@ -12,6 +12,7 @@ public class Punch {
     private int terminalID;
     private PunchType eventType;
     private int ID;
+    private int interval, period, penalty;
     private LocalDateTime originalTimeStamp;
     private LocalTime adjustedTimeStamp;
 
@@ -22,6 +23,9 @@ public class Punch {
         this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.adjustedTimeStamp = null;
         this.ID = 0;
+        this.period = Integer.parseInt(param.get("graceperiod"));
+        this.interval = Integer.parseInt(param.get("roundinterval"));
+        this.penalty = Integer.parseInt(param.get("dockpenalty"));
     }
     
     public String getBadgeID() {
@@ -65,4 +69,20 @@ public class Punch {
         return s.toString().toUpperCase();
     }
     
+  public String printAdjusted() {
+        
+        // "#D2C39273 CLOCK IN: WED 09/05/2018 07:00:07 "
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+        
+        StringBuilder s = new StringBuilder();
+        
+        s.append('#').append(badgeID);
+        s.append(" ").append(eventType);
+        s.append(": ").append(dtf.format(originalTimeStamp));
+        s.append("( ").append(adjustedTimeStamp);
+        
+
+        return s.toString().toUpperCase();
+    }
 }
