@@ -18,7 +18,7 @@ public class TAS {
         LocalDate ts = LocalDate.of(2018, Month.SEPTEMBER, 10);
         
         db.getDailyPunchList(b1, ts);
-        
+        System.out.println(p1.newtime());
         
     }
     

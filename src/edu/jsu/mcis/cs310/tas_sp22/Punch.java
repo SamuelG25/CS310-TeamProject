@@ -12,9 +12,9 @@ public class Punch {
     private int terminalID;
     private PunchType eventType;
     private int ID;
-    private int interval, period, penalty;
     private LocalDateTime originalTimeStamp;
     private LocalTime adjustedTimeStamp;
+    private LocalTime newtime;
 
     public Punch(LinkedHashMap<String,String> param) {
         this.badgeID = param.get("badgeid");
@@ -23,10 +23,40 @@ public class Punch {
         this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.adjustedTimeStamp = null;
         this.ID = 0;
-        this.period = Integer.parseInt(param.get("graceperiod"));
-        this.interval = Integer.parseInt(param.get("roundinterval"));
-        this.penalty = Integer.parseInt(param.get("dockpenalty"));
+        
     }
+    
+    public void adjust(Shift s){
+        LocalTime shiftstart = s.getShiftstart();
+        LocalTime shiftstop = s.getShiftstop();
+        LocalTime lunchstart = s.getLunchstart();
+        LocalTime lunchstop = s.getLunchstop();
+        
+        int interval = s.getInterval();
+        int period = s.getPeriod();
+        int penalty = s.getPenalty();
+        
+        
+        LocalTime intervalTime = shiftstart.minusHours(interval);
+        LocalTime periodTime = shiftstart.plusHours(period);
+        LocalTime penaltyTime = shiftstart.plusHours(penalty);
+        
+        newtime = this.originalTimeStamp.toLocalTime();
+        
+       
+        
+        
+        
+        
+        
+        
+       
+    }
+    
+    public LocalTime newtime() {
+        return newtime;
+    }
+    
     
     public String getBadgeID() {
         return badgeID;

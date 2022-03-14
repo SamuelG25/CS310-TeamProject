@@ -7,6 +7,7 @@ import java.util.*;
 public class Shift {
     private String description;
     private LocalTime shiftstart,shiftstop,lunchstart,lunchstop;
+    private int interval, period, penalty;
 
     public Shift(LinkedHashMap<String,String> param ) {
         this.shiftstart = LocalTime.parse(param.get("shiftstart"));
@@ -14,6 +15,21 @@ public class Shift {
         this.lunchstart = LocalTime.parse(param.get("lunchstart"));
         this.lunchstop = LocalTime.parse(param.get("lunchstop"));
         this.description = param.get("description");
+        this.period = Integer.parseInt(param.get("graceperiod"));
+        this.interval = Integer.parseInt(param.get("roundinterval"));
+        this.penalty = Integer.parseInt(param.get("dockpenalty"));
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public int getPenalty() {
+        return penalty;
     }
     
     private long getDuration(LocalTime Time1, LocalTime Time2){
