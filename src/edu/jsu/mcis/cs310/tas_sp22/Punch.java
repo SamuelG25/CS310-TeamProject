@@ -14,7 +14,7 @@ public class Punch {
     private int ID;
     private LocalDateTime originalTimeStamp;
     private LocalTime adjustedTimeStamp;
-    private LocalTime newtime;
+    
 
     public Punch(LinkedHashMap<String,String> param) {
         this.badgeID = param.get("badgeid");
@@ -32,30 +32,26 @@ public class Punch {
         LocalTime lunchstart = s.getLunchstart();
         LocalTime lunchstop = s.getLunchstop();
         
-        int interval = s.getInterval();
-        int period = s.getPeriod();
-        int penalty = s.getPenalty();
         
+        LocalTime intervalTime = shiftstart.minusHours(s.getInterval());
+        LocalTime periodTime = shiftstart.plusHours(s.getPeriod());
+        LocalTime penaltyTime = shiftstart.plusHours(s.getPenalty());
         
-        LocalTime intervalTime = shiftstart.minusHours(interval);
-        LocalTime periodTime = shiftstart.plusHours(period);
-        LocalTime penaltyTime = shiftstart.plusHours(penalty);
+        LocalTime ogtimestamp = LocalTime.of(this.originalTimeStamp.getHour(), this.originalTimeStamp.getMinute());
         
-        newtime = this.originalTimeStamp.toLocalTime();
+        if (ogtimestamp.isAfter(intervalTime) && ogtimestamp.isBefore(shiftstart)){
+            adjustedTimeStamp = shiftstart;
+        }
+        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(periodTime)){
+            adjustedTimeStamp = shiftstart;
+        }
+        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(penaltyTime)){
+            adjustedTimeStamp = penaltyTime;
+        }
         
-       
-        
-        
-        
-        
-        
-        
-       
     }
     
-    public LocalTime newtime() {
-        return newtime;
-    }
+    
     
     
     public String getBadgeID() {
