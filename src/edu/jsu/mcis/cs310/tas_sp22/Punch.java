@@ -14,7 +14,7 @@ public class Punch {
     private int ID;
     private LocalDateTime originalTimeStamp;
     private LocalTime adjustedTimeStamp;
-    
+    private String adjustMessage;
 
     public Punch(LinkedHashMap<String,String> param) {
         this.badgeID = param.get("badgeid");
@@ -33,20 +33,47 @@ public class Punch {
         LocalTime lunchstop = s.getLunchstop();
         
         
-        LocalTime intervalTime = shiftstart.minusHours(s.getInterval());
-        LocalTime periodTime = shiftstart.plusHours(s.getPeriod());
-        LocalTime penaltyTime = shiftstart.plusHours(s.getPenalty());
+        LocalTime StartIntervalTime = shiftstart.minusHours(s.getInterval());
+        LocalTime StartGraceTime = shiftstart.plusHours(s.getPeriod());
+        LocalTime StartPenaltyTime = shiftstart.plusHours(s.getPenalty());
+        
+        LocalTime StopIntervalTime = shiftstop.plusHours(s.getInterval());
+        LocalTime StoptGraceTime = shiftstop.minusHours(s.getPeriod());
+        LocalTime StoptPenaltyTime = shiftstop.minusHours(s.getPenalty());
         
         LocalTime ogtimestamp = LocalTime.of(this.originalTimeStamp.getHour(), this.originalTimeStamp.getMinute());
         
-        if (ogtimestamp.isAfter(intervalTime) && ogtimestamp.isBefore(shiftstart)){
+        if (ogtimestamp.isAfter(StartIntervalTime) && ogtimestamp.isBefore(shiftstart)){
             adjustedTimeStamp = shiftstart;
+            adjustMessage = "Shift Start";
         }
-        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(periodTime)){
+        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(StartGraceTime)){
             adjustedTimeStamp = shiftstart;
+            adjustMessage = "Shift Start";
         }
-        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(penaltyTime)){
-            adjustedTimeStamp = penaltyTime;
+        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(StartPenaltyTime)){
+            adjustedTimeStamp = StartPenaltyTime;
+            adjustMessage = "Shift Start";
+        }
+        else if (ogtimestamp.isAfter(lunchstart) && ogtimestamp.isBefore(lunchstop) && this.eventType.equals(0)){
+            adjustedTimeStamp = lunchstart;
+            adjustMessage = "Lunch Start";
+        }
+        else if (ogtimestamp.isAfter(lunchstart) && ogtimestamp.isBefore(lunchstop) && this.eventType.equals(1)){
+            adjustedTimeStamp = lunchstop;
+            adjustMessage = "Lunch Stop";
+        }
+        else if (ogtimestamp.isAfter(StoptPenaltyTime) && ogtimestamp.isBefore(StoptGraceTime)){
+             adjustedTimeStamp = StoptPenaltyTime;
+             adjustMessage = "Shift Stop";
+        }
+        else if (ogtimestamp.isAfter(StoptGraceTime) && ogtimestamp.isBefore(shiftstop)){
+             adjustedTimeStamp = shiftstop;
+             adjustMessage = "Shift Stop";
+        }
+        else if (ogtimestamp.isAfter(shiftstop) && ogtimestamp.isBefore(StopIntervalTime)){
+             adjustedTimeStamp = shiftstop;
+             adjustMessage = "Shift Stop";
         }
         
     }
