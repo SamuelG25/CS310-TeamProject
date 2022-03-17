@@ -13,7 +13,7 @@ public class Punch {
     private PunchType eventType;
     private int ID;
     private LocalDateTime originalTimeStamp;
-    private LocalTime adjustedTimeStamp;
+    private LocalDateTime adjustedTimeStamp;
     private String adjustMessage;
 
     public Punch(LinkedHashMap<String,String> param) {
@@ -27,56 +27,79 @@ public class Punch {
     }
     
     public void adjust(Shift s){
-        LocalTime shiftstart = s.getShiftstart();
-        LocalTime shiftstop = s.getShiftstop();
-        LocalTime lunchstart = s.getLunchstart();
-        LocalTime lunchstop = s.getLunchstop();
         
+        LocalDateTime shiftStart = originalTimeStamp.withHour(s.getShiftstart().getHour())
+                .withMinute(s.getShiftstart().getMinute()).withSecond(0).withNano(0);
         
-        LocalTime StartIntervalTime = shiftstart.minusHours(s.getInterval());
-        LocalTime StartGraceTime = shiftstart.plusHours(s.getPeriod());
-        LocalTime StartPenaltyTime = shiftstart.plusHours(s.getPenalty());
+        LocalDateTime shiftStop = originalTimeStamp.withHour(s.getShiftstop().getHour())
+                .withMinute(s.getShiftstop().getMinute()).withSecond(0).withNano(0);
         
-        LocalTime StopIntervalTime = shiftstop.plusHours(s.getInterval());
-        LocalTime StoptGraceTime = shiftstop.minusHours(s.getPeriod());
-        LocalTime StoptPenaltyTime = shiftstop.minusHours(s.getPenalty());
+        LocalDateTime lunchStart = originalTimeStamp.withHour(s.getLunchstart().getHour())
+                .withMinute(s.getLunchstart().getMinute()).withSecond(0).withNano(0);
         
-        LocalTime ogtimestamp = LocalTime.of(this.originalTimeStamp.getHour(), this.originalTimeStamp.getMinute());
+        LocalDateTime lunchStop = originalTimeStamp.withHour(s.getLunchstop().getHour())
+                .withMinute(s.getLunchstop().getMinute()).withSecond(0).withNano(0);
         
-        if (ogtimestamp.isAfter(StartIntervalTime) && ogtimestamp.isBefore(shiftstart)){
-            adjustedTimeStamp = shiftstart;
-            adjustMessage = "Shift Start";
-        }
-        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(StartGraceTime)){
-            adjustedTimeStamp = shiftstart;
-            adjustMessage = "Shift Start";
-        }
-        else if (ogtimestamp.isAfter(shiftstart) && ogtimestamp.isBefore(StartPenaltyTime)){
-            adjustedTimeStamp = StartPenaltyTime;
-            adjustMessage = "Shift Start";
-        }
-        else if (ogtimestamp.isAfter(lunchstart) && ogtimestamp.isBefore(lunchstop) && this.eventType.equals(0)){
-            adjustedTimeStamp = lunchstart;
-            adjustMessage = "Lunch Start";
-        }
-        else if (ogtimestamp.isAfter(lunchstart) && ogtimestamp.isBefore(lunchstop) && this.eventType.equals(1)){
-            adjustedTimeStamp = lunchstop;
-            adjustMessage = "Lunch Stop";
-        }
-        else if (ogtimestamp.isAfter(StoptPenaltyTime) && ogtimestamp.isBefore(StoptGraceTime)){
-             adjustedTimeStamp = StoptPenaltyTime;
-             adjustMessage = "Shift Stop";
-        }
-        else if (ogtimestamp.isAfter(StoptGraceTime) && ogtimestamp.isBefore(shiftstop)){
-             adjustedTimeStamp = shiftstop;
-             adjustMessage = "Shift Stop";
-        }
-        else if (ogtimestamp.isAfter(shiftstop) && ogtimestamp.isBefore(StopIntervalTime)){
-             adjustedTimeStamp = shiftstop;
-             adjustMessage = "Shift Stop";
-        }
+        LocalDateTime shiftStartInterval = shiftStart.minusMinutes(s.getInterval());
+        LocalDateTime shiftStartGrace = shiftStart.plusMinutes(s.getPeriod());
+        LocalDateTime shiftStartDock = shiftStart.plusMinutes(s.getPenalty());
         
+        LocalDateTime shiftStopInterval = shiftStop.plusMinutes(s.getInterval());
+        LocalDateTime shiftStopGrace = shiftStop.minusMinutes(s.getPeriod());
+        LocalDateTime shiftStopDock = shiftStop.minusMinutes(s.getPenalty());
+        
+        DayOfWeek day = originalTimeStamp.getDayOfWeek();
+        
+        // if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {}
+        
+        if (eventType == PunchType.CLOCK_IN) {
+        
+            if (originalTimeStamp.isAfter(shiftStartInterval) && originalTimeStamp.isBefore(shiftStart)){
+                adjustedTimeStamp = shiftStart;
+                adjustMessage = "Shift Start";
+            }
+            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStopGrace)){
+                adjustedTimeStamp = shiftStart;
+                adjustMessage = "Shift Start";
+            }
+            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStartDock)){
+                adjustedTimeStamp = shiftStartDock;
+                adjustMessage = "Shift Dock";
+            }
+            else if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop) ){
+                adjustedTimeStamp = lunchStart;
+                adjustMessage = "Lunch Start";
+            }
+            else{
+                adjustMessage = "None";
+            }
+            
+        }
+        if (eventType == PunchType.CLOCK_OUT){
+            if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop)){
+                adjustedTimeStamp = lunchStop;
+                adjustMessage = "Lunch Stop";
+            }
+            else if (originalTimeStamp.isAfter(shiftStopDock) && originalTimeStamp.isBefore(shiftStopGrace)){
+                 adjustedTimeStamp = shiftStopDock;
+                 adjustMessage = "Shift Dock";
+            }
+            else if (originalTimeStamp.isAfter(shiftStopGrace) && originalTimeStamp.isBefore(shiftStop)){
+                 adjustedTimeStamp = shiftStop;
+                 adjustMessage = "Shift Stop";
+            }
+            else if (originalTimeStamp.isAfter(shiftStop) && originalTimeStamp.isBefore(shiftStopInterval)){
+                 adjustedTimeStamp = shiftStop;
+                 adjustMessage = "Shift Stop";
+            }
+            else{
+                adjustMessage = "None";
+            }
+        }
+            
     }
+        
+    
     
     
     
@@ -101,7 +124,7 @@ public class Punch {
         return originalTimeStamp;
     }
 
-    public LocalTime getAdjustedTimeStamp() {
+    public LocalDateTime getAdjustedTimeStamp() {
         return adjustedTimeStamp;
     }
     
@@ -132,8 +155,8 @@ public class Punch {
         
         s.append('#').append(badgeID);
         s.append(" ").append(eventType);
-        s.append(": ").append(dtf.format(originalTimeStamp));
-        s.append("( ").append(adjustedTimeStamp);
+        s.append(": ").append(dtf.format(adjustedTimeStamp));
+        s.append(" (").append(adjustMessage).append(")");
         
 
         return s.toString().toUpperCase();
