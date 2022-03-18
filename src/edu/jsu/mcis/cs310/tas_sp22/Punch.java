@@ -28,6 +28,7 @@ public class Punch {
     
     public void adjust(Shift s){
         
+        
         LocalDateTime shiftStart = originalTimeStamp.withHour(s.getShiftstart().getHour())
                 .withMinute(s.getShiftstart().getMinute()).withSecond(0).withNano(0);
         
@@ -58,7 +59,7 @@ public class Punch {
                 adjustedTimeStamp = shiftStart;
                 adjustMessage = "Shift Start";
             }
-            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStopGrace)){
+            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStartGrace)){
                 adjustedTimeStamp = shiftStart;
                 adjustMessage = "Shift Start";
             }
@@ -66,19 +67,27 @@ public class Punch {
                 adjustedTimeStamp = shiftStartDock;
                 adjustMessage = "Shift Dock";
             }
-            else if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop) ){
-                adjustedTimeStamp = lunchStart;
-                adjustMessage = "Lunch Start";
+            else if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop)){
+                adjustedTimeStamp = lunchStop;
+                adjustMessage = "Lunch Stop";
             }
+            
             else{
                 adjustMessage = "None";
             }
             
         }
         if (eventType == PunchType.CLOCK_OUT){
+            
+            
             if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop)){
                 adjustedTimeStamp = lunchStop;
                 adjustMessage = "Lunch Stop";
+            }
+            
+            if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop) ){
+                adjustedTimeStamp = lunchStart;
+                adjustMessage = "Lunch Start";
             }
             else if (originalTimeStamp.isAfter(shiftStopDock) && originalTimeStamp.isBefore(shiftStopGrace)){
                  adjustedTimeStamp = shiftStopDock;
@@ -89,21 +98,35 @@ public class Punch {
                  adjustMessage = "Shift Stop";
             }
             else if (originalTimeStamp.isAfter(shiftStop) && originalTimeStamp.isBefore(shiftStopInterval)){
-                 adjustedTimeStamp = shiftStop;
-                 adjustMessage = "Shift Stop";
+                
+                int minute = originalTimeStamp.getMinute();
+                int interval = s.getInterval();
+                int adjustedMinute = 0;
+                
+                if(minute % interval !=0){
+                    if (minute % interval < interval/2){
+                        adjustedMinute = Math.round(( minute/interval)* interval);
+                        adjustedTimeStamp.withMinute(adjustedMinute);
+                }
+                }
+                else{
+                    
+                    adjustedMinute = Math.round((minute/interval) *interval) + interval;
+                    adjustedTimeStamp.withMinute(adjustedMinute);
+                
+                }
+                
+                 adjustMessage = "Interval Round";
             }
-            else{
-                adjustMessage = "None";
-            }
-        }
             
-    }
-        
+            else {
+                adjustedTimeStamp = originalTimeStamp.withSecond(0);
+                adjustMessage = "None";
+                }
+            }    
+        }
     
-    
-    
-    
-    
+       
     public String getBadgeID() {
         return badgeID;
     }
@@ -155,10 +178,10 @@ public class Punch {
         
         s.append('#').append(badgeID);
         s.append(" ").append(eventType);
-        s.append(": ").append(dtf.format(adjustedTimeStamp));
+        s.append(": ").append(dtf.format(adjustedTimeStamp).toUpperCase());
         s.append(" (").append(adjustMessage).append(")");
         
 
-        return s.toString().toUpperCase();
+        return s.toString();
     }
 }
