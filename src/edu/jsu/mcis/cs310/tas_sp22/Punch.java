@@ -51,9 +51,29 @@ public class Punch {
         
         DayOfWeek day = originalTimeStamp.getDayOfWeek();
         
-        // if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {}
+        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+            
+            int minute = originalTimeStamp.getMinute();
+            int interval = s.getInterval();
+            int adjustedMinute = 0;
+            
+            if(minute % interval !=0){
+                    if (minute % interval < interval/2){
+                        adjustedMinute = Math.round(( minute/interval)* interval);
+                        adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
+                        adjustMessage = "Interval Round";
+                }
+                }
+                else{
+                    
+                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
+                    adjustMessage = "Interval Round";
+                    
+                } 
+        }
         
-        if (eventType == PunchType.CLOCK_IN) {
+        else if (eventType == PunchType.CLOCK_IN) {
         
             if (originalTimeStamp.isAfter(shiftStartInterval) && originalTimeStamp.isBefore(shiftStart)){
                 adjustedTimeStamp = shiftStart;
@@ -71,19 +91,35 @@ public class Punch {
                 adjustedTimeStamp = lunchStop;
                 adjustMessage = "Lunch Stop";
             }
+            else if (originalTimeStamp.withSecond(0) == shiftStart){
+              originalTimeStamp = shiftStart;
+              adjustMessage = "None";
+            }
             
             else{
-                adjustMessage = "None";
+                int minute = originalTimeStamp.getMinute();
+                int interval = s.getInterval();
+                int adjustedMinute = 0;
+                
+                if(minute % interval !=0){
+                    if (minute % interval < interval/2){
+                        adjustedMinute = Math.round(( minute/interval)* interval);
+                        adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
+                }
+                }
+                else{
+                    
+                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
+                }
+                
+                 adjustMessage = "Interval Round";
+            }
             }
             
-        }
-        if (eventType == PunchType.CLOCK_OUT){
+        
+        else if (eventType == PunchType.CLOCK_OUT){
             
-            
-            if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop)){
-                adjustedTimeStamp = lunchStop;
-                adjustMessage = "Lunch Stop";
-            }
             
             if (originalTimeStamp.isAfter(lunchStart) && originalTimeStamp.isBefore(lunchStop) ){
                 adjustedTimeStamp = lunchStart;
@@ -98,6 +134,15 @@ public class Punch {
                  adjustMessage = "Shift Stop";
             }
             else if (originalTimeStamp.isAfter(shiftStop) && originalTimeStamp.isBefore(shiftStopInterval)){
+                adjustedTimeStamp = shiftStop;
+                adjustMessage = "Shift Stop";
+            }
+            else if (originalTimeStamp.withMinute(0).equals(shiftStop)){
+              originalTimeStamp = shiftStop;
+              adjustMessage = "None";
+            }
+            
+            else {
                 
                 int minute = originalTimeStamp.getMinute();
                 int interval = s.getInterval();
@@ -106,22 +151,18 @@ public class Punch {
                 if(minute % interval !=0){
                     if (minute % interval < interval/2){
                         adjustedMinute = Math.round(( minute/interval)* interval);
-                        adjustedTimeStamp.withMinute(adjustedMinute);
+                        adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                 }
                 }
                 else{
                     
-                    adjustedMinute = Math.round((minute/interval) *interval) + interval;
-                    adjustedTimeStamp.withMinute(adjustedMinute);
-                
+                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                 }
                 
                  adjustMessage = "Interval Round";
-            }
-            
-            else {
-                adjustedTimeStamp = originalTimeStamp.withSecond(0);
-                adjustMessage = "None";
+                
+                
                 }
             }    
         }
