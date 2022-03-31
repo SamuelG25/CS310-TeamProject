@@ -15,8 +15,9 @@ public class TAS {
         if (db.isConnected())System.out.println("Connected");
         Badge b1 = db.getBadge("4E6E296E");
         Punch p1 = db.getPunch(3953);
-        LocalDate ts = LocalDate.of(2018, Month.SEPTEMBER, 10);
         Shift s2 = db.getShift(1);
+        
+        System.out.println(s2.getInterval());
         
         p1.adjust(s2);
         System.out.println(p1.printAdjusted());

@@ -56,25 +56,24 @@ public class Punch {
             int minute = originalTimeStamp.getMinute();
             int interval = s.getInterval();
             int adjustedMinute = 0;
-            
-            
                 
                 if(minute % interval !=0){
-                    if (minute % interval < interval/2){
+                    if ((minute % interval) < (interval/2)){
                         adjustedMinute = Math.round(( minute/interval)* interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
+                    }
+                    
+                    else{
+                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute);
+                    adjustMessage = "Interval Round";
+                    }
                 }
-                }
+                
                 else if (minute % interval == 0){
                     adjustedTimeStamp = originalTimeStamp.withSecond(0);
                     adjustMessage = "None";
-                }
-                else{
-                    
-                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
-                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
-                    adjustMessage = "Interval Round";
                 }
         }
         
@@ -88,7 +87,8 @@ public class Punch {
                 adjustedTimeStamp = shiftStart;
                 adjustMessage = "Shift Start";
             }
-            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStartDock)){
+            else if (originalTimeStamp.isAfter(shiftStart) && originalTimeStamp.isBefore(shiftStartDock) 
+                    || originalTimeStamp.equals(shiftStartDock)){
                 adjustedTimeStamp = shiftStartDock;
                 adjustMessage = "Shift Dock";
             }
@@ -101,30 +101,32 @@ public class Punch {
               adjustMessage = "None";
             }
             
-            else{
+            else {
+                
                 int minute = originalTimeStamp.getMinute();
                 int interval = s.getInterval();
                 int adjustedMinute = 0;
                 
                 if(minute % interval !=0){
-                    if (minute % interval < interval/2){
+                    if ((minute % interval) < (interval/2)){
                         adjustedMinute = Math.round(( minute/interval)* interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
-                }
+                    }
+                    else{
+                    
+                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
+                    adjustMessage = "Interval Round";
+                    }
                 }
                 else if (minute % interval == 0){
                     adjustedTimeStamp = originalTimeStamp.withSecond(0);
                     adjustMessage = "None";
                 }
-                else{
-                    
-                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
-                    adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
-                    adjustMessage = "Interval Round";
-                }
             }
-            }
+        }
+            
             
         
         else if (eventType == PunchType.CLOCK_OUT){
@@ -134,11 +136,13 @@ public class Punch {
                 adjustedTimeStamp = lunchStart;
                 adjustMessage = "Lunch Start";
             }
-            else if (originalTimeStamp.isAfter(shiftStopDock) && originalTimeStamp.isBefore(shiftStopGrace)){
+            else if (originalTimeStamp.isAfter(shiftStopDock) && originalTimeStamp.isBefore(shiftStopGrace)
+                    || originalTimeStamp.equals(shiftStartDock)){
                  adjustedTimeStamp = shiftStopDock;
                  adjustMessage = "Shift Dock";
             }
-            else if (originalTimeStamp.isAfter(shiftStopGrace) && originalTimeStamp.isBefore(shiftStop)){
+            else if (originalTimeStamp.isAfter(shiftStopGrace) && originalTimeStamp.isBefore(shiftStop)
+                    ||originalTimeStamp.equals(shiftStop)){
                  adjustedTimeStamp = shiftStop;
                  adjustMessage = "Shift Stop";
             }
@@ -154,21 +158,21 @@ public class Punch {
                 int adjustedMinute = 0;
                 
                 if(minute % interval !=0){
-                    if (minute % interval < interval/2){
+                    if ((minute % interval) < (interval/2)){
                         adjustedMinute = Math.round(( minute/interval)* interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
-                }
-                }
-                else if (minute % interval == 0){
-                    adjustedTimeStamp = originalTimeStamp.withSecond(0);
-                    adjustMessage = "None";
-                }
-                else{
+                    }
+                    else{
                     
                     adjustedMinute = Math.round(((minute/interval) *interval) + interval);
                     adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                     adjustMessage = "Interval Round";
+                    }
+                }
+                else if (minute % interval == 0){
+                    adjustedTimeStamp = originalTimeStamp.withSecond(0);
+                    adjustMessage = "None";
                 }
             }    
         }               
