@@ -84,11 +84,11 @@ public class TASDatabase {
                         ResultSet resultset = pstmt.getResultSet();
                         resultset.next();
                         desc = resultset.getString("description");
-                        resultset.close( );
+                        resultset.close();
                     } 
                 
                
-            } catch (SQLException ex) {};
+            } catch (Exception e) { e.printStackTrace(); }
     
     Badge b1 = new Badge(badgeid,desc);
     return b1;        
@@ -125,7 +125,7 @@ public class TASDatabase {
                     resultset.close();
                 }
                 
-        } catch (SQLException ex) {}
+        } catch (Exception e) { e.printStackTrace(); }
     
         
     Employee Emp = new Employee(results);
@@ -163,7 +163,7 @@ public class TASDatabase {
                     
                     resultset.close();
                 }    
-        } catch (SQLException ex) {}
+        } catch (Exception e) { e.printStackTrace(); }
         
     Employee Emp = new Employee(results);
     return Emp;
@@ -198,7 +198,7 @@ public class TASDatabase {
                     
                         resultset.close();
                     }
-            }catch (SQLException ex) {}
+            }catch (Exception e) { e.printStackTrace(); }
         
         
         
@@ -225,7 +225,7 @@ public class TASDatabase {
                     } 
                 
                
-            } catch (SQLException ex) {}
+            } catch (Exception e) { e.printStackTrace(); }
         return getShift(shiftid);
     }
     
@@ -253,12 +253,40 @@ public class TASDatabase {
                     }
                 
                 
-        } catch (SQLException ex) {}
+        } catch (Exception e) { e.printStackTrace(); }
         
         
     Punch p1 = new Punch(result);
     return p1;
     }
+    
+    public Department getDepartment(int id){
+        String description = null;
+        String terminalid = null;
+        
+        try {
+            
+            String query = "SELECT * FROM department WHERE id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, id);
+            
+            boolean hasresults = pstmt.execute();
+            
+            if ( hasresults ){
+                ResultSet resultset = pstmt.getResultSet();
+                resultset.next();
+                
+                description = resultset.getString("description");
+                terminalid = resultset.getString("terminalid");
+            }
+            
+            
+        }catch (Exception e) { e.printStackTrace(); }
+        
+    Department d1 = new Department(description,terminalid,);
+    return d1;    
+    }
+    
     
     public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date){
         
