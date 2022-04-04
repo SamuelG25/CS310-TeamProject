@@ -263,6 +263,7 @@ public class TASDatabase {
     public Department getDepartment(int id){
         String description = null;
         String terminalid = null;
+        String keys = null;
         
         try {
             
@@ -273,9 +274,11 @@ public class TASDatabase {
             boolean hasresults = pstmt.execute();
             
             if ( hasresults ){
+                
                 ResultSet resultset = pstmt.getResultSet();
                 resultset.next();
                 
+                keys = resultset.getString("id");
                 description = resultset.getString("description");
                 terminalid = resultset.getString("terminalid");
             }
@@ -283,7 +286,7 @@ public class TASDatabase {
             
         }catch (Exception e) { e.printStackTrace(); }
         
-    Department d1 = new Department(description,terminalid,);
+    Department d1 = new Department(description,terminalid,keys);
     return d1;    
     }
     
