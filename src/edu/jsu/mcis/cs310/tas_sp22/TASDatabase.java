@@ -290,6 +290,53 @@ public class TASDatabase {
     return d1;    
     }
     
+    public int insertPunch(Punch p){
+        int id = 0;
+        
+        Employee e1 = getEmployee(Integer.parseInt(p.getBadgeID()));
+        Department d1 = getDepartment(e1.getDepType());
+        
+        if (p.getTerminalID() != 0){
+            
+            if (p.getTerminalID() == d1.getTerminalid()){
+                try{
+                
+                    String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
+                    PreparedStatement pstmt = connection.prepareStatement(query);
+                    
+                    pstmt.setString(1,p.getBadgeID());
+                    pstmt.setObject(2,p.getOriginalTimeStamp());
+                    pstmt.setInt(3,p.getTerminalID());
+                    pstmt.setObject(4,p.getEventType());
+                    
+                
+                }catch (Exception e) { e.printStackTrace(); }
+                
+            }
+            
+        }
+        else{
+            
+            try{
+                
+                    String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
+                    PreparedStatement pstmt = connection.prepareStatement(query);
+                    
+                    pstmt.setString(1,p.getBadgeID());
+                    pstmt.setObject(2,p.getOriginalTimeStamp());
+                    pstmt.setInt(3,p.getTerminalID());
+                    pstmt.setObject(4,p.getEventType());
+                    
+                
+                }catch (Exception e) { e.printStackTrace(); }
+        }
+        
+        Punch p1 = getPunch(p.ID());
+        id = p1.ID();
+        
+        return id;
+    }
+    
     
     public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date){
         
