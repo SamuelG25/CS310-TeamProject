@@ -63,10 +63,10 @@ public class Feature2 {
 		
         /* Get Punch Properties */
         
-        String badgeid = p1.getBadge().getId();
-        ots = p1.getOriginalTimestamp();
-        int terminalid = p1.getTerminalid();
-        PunchType punchtype = p1.getPunchtype();
+        String badgeid = p1.getBadgeID();
+        ots = p1.getOriginalTimeStamp();
+        int terminalid = p1.getTerminalID();
+        PunchType punchtype = p1.getEventType();
 		
         /* Insert Punch Into Database */
         
@@ -78,12 +78,12 @@ public class Feature2 {
 		
         /* Compare Punches */
 
-        assertEquals(badgeid, p2.getBadge().getId());
+        assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimestamp();
+        rts = p2.getOriginalTimeStamp();
         
-        assertEquals(terminalid, p2.getTerminalid());
-        assertEquals(punchtype, p2.getPunchtype());
+        assertEquals(terminalid, p2.getTerminalID());
+        assertEquals(punchtype, p2.getEventType());
         assertEquals(ots.format(dtf), rts.format(dtf));
         
     }
@@ -120,10 +120,10 @@ public class Feature2 {
 		
         /* Get Punch Properties */
         
-        String badgeid = p1.getBadge().getId();
-        ots = p1.getOriginalTimestamp();
-        int terminalid = p1.getTerminalid();
-        PunchType punchtype = p1.getPunchtype();
+        String badgeid = p1.getBadgeID();
+        ots = p1.getOriginalTimeStamp();
+        int terminalid = p1.getTerminalID();
+        PunchType punchtype = p1.getEventType();
 		
         /* Insert Punch Into Database */
         
@@ -135,12 +135,12 @@ public class Feature2 {
 		
         /* Compare Punches */
 
-        assertEquals(badgeid, p2.getBadge().getId());
+        assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimestamp();
+        rts = p2.getOriginalTimeStamp();
         
-        assertEquals(terminalid, p2.getTerminalid());
-        assertEquals(punchtype, p2.getPunchtype());
+        assertEquals(terminalid, p2.getTerminalID());
+        assertEquals(punchtype, p2.getEventType());
         assertEquals(ots.format(dtf), rts.format(dtf));
         
     }
@@ -160,10 +160,10 @@ public class Feature2 {
 		
         /* Get Punch Properties */
         
-        String badgeid = p1.getBadge().getId();
-        ots = p1.getOriginalTimestamp();
-        int terminalid = p1.getTerminalid();
-        PunchType punchtype = p1.getPunchtype();
+        String badgeid = p1.getBadgeID();
+        ots = p1.getOriginalTimeStamp();
+        int terminalid = p1.getTerminalID();
+        PunchType punchtype = p1.getEventType();
 		
         /* Insert Punch Into Database */
         
@@ -175,12 +175,12 @@ public class Feature2 {
 		
         /* Compare Punches */
 
-        assertEquals(badgeid, p2.getBadge().getId());
+        assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimestamp();
+        rts = p2.getOriginalTimeStamp();
         
-        assertEquals(terminalid, p2.getTerminalid());
-        assertEquals(punchtype, p2.getPunchtype());
+        assertEquals(terminalid, p2.getTerminalID());
+        assertEquals(punchtype, p2.getEventType());
         assertEquals(ots.format(dtf), rts.format(dtf));
         
     }
@@ -200,10 +200,10 @@ public class Feature2 {
 		
         /* Get Punch Properties */
         
-        String badgeid = p1.getBadge().getId();
-        ots = p1.getOriginalTimestamp();
-        int terminalid = p1.getTerminalid();
-        PunchType punchtype = p1.getPunchtype();
+        String badgeid = p1.getBadgeID();
+        ots = p1.getOriginalTimeStamp();
+        int terminalid = p1.getTerminalID();
+        PunchType punchtype = p1.getEventType();
 		
         /* Insert Punch Into Database */
         
@@ -215,12 +215,12 @@ public class Feature2 {
 		
         /* Compare Punches */
 
-        assertEquals(badgeid, p2.getBadge().getId());
+        assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimestamp();
+        rts = p2.getOriginalTimeStamp();
         
-        assertEquals(terminalid, p2.getTerminalid());
-        assertEquals(punchtype, p2.getPunchtype());
+        assertEquals(terminalid, p2.getTerminalID());
+        assertEquals(punchtype, p2.getEventType());
         assertEquals(ots.format(dtf), rts.format(dtf));
         
     }

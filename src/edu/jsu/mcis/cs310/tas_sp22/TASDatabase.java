@@ -283,7 +283,7 @@ public class TASDatabase {
                 terminalid = resultset.getString("terminalid");
             }
             
-            
+        pstmt.close();
         }catch (Exception e) { e.printStackTrace(); }
         
     Department d1 = new Department(description,terminalid,keys);
@@ -291,6 +291,7 @@ public class TASDatabase {
     }
     
     public int insertPunch(Punch p){
+        
         int id = 0;
         
         Employee e1 = getEmployee(Integer.parseInt(p.getBadgeID()));
@@ -304,30 +305,29 @@ public class TASDatabase {
                     String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
                     PreparedStatement pstmt = connection.prepareStatement(query);
                     
-                    pstmt.setString(1,p.getBadgeID());
-                    pstmt.setObject(2,p.getOriginalTimeStamp());
-                    pstmt.setInt(3,p.getTerminalID());
-                    pstmt.setObject(4,p.getEventType());
+                    Timestamp ts = Timestamp.valueOf(p.getOriginalTimeStamp());   
                     
+                    pstmt.setString(1,p.getBadgeID());
+                    pstmt.setTimestamp(2,ts);
+                    pstmt.setInt(3,p.getTerminalID());
+                    pstmt.setInt(4,p.getEventType().ordinal());
                 
                 }catch (Exception e) { e.printStackTrace(); }
-                
-            }
-            
+            }   
         }
         else{
-            
             try{
                 
                     String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
                     PreparedStatement pstmt = connection.prepareStatement(query);
                     
-                    pstmt.setString(1,p.getBadgeID());
-                    pstmt.setObject(2,p.getOriginalTimeStamp());
-                    pstmt.setInt(3,p.getTerminalID());
-                    pstmt.setObject(4,p.getEventType());
+                    Timestamp ts = Timestamp.valueOf(p.getOriginalTimeStamp());   
                     
-                
+                    pstmt.setString(1,p.getBadgeID());
+                    pstmt.setTimestamp(2,ts);
+                    pstmt.setInt(3,p.getTerminalID());
+                    pstmt.setInt(4,p.getEventType().ordinal());
+                    
                 }catch (Exception e) { e.printStackTrace(); }
         }
         
