@@ -261,6 +261,7 @@ public class TASDatabase {
     }
     
     public Department getDepartment(int id){
+        
         String description = null;
         String terminalid = null;
         String keys = null;
@@ -294,46 +295,34 @@ public class TASDatabase {
         
         int id = 0;
         
-        Employee e1 = getEmployee(Integer.parseInt(p.getBadgeID()));
+        Badge b1 = getBadge(p.getBadgeID());
+        Employee e1 = getEmployee(b1);
         Department d1 = getDepartment(e1.getDepType());
         
-        if (p.getTerminalID() != 0){
-            
-            if (p.getTerminalID() == d1.getTerminalid()){
-                try{
+        if (p.getTerminalID() == d1.getTerminalid()|| p.getTerminalID() == 0){
+            try {
+
+                String query = "INSERT INTO event (badgeid, timestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+
+                pstmt.setString(1, p.getBadgeID());
+                pstmt.setTimestamp(2, Timestamp.valueOf(p.getOriginalTimeStamp()));
+                pstmt.setInt(3, p.getTerminalID());
+                pstmt.setInt(4, p.getEventType().ordinal());
+
+                int rows = pstmt.executeUpdate();
+
+                if ( rows == 1 ) {
+                    
+                    ResultSet resultset = pstmt.getResultSet();
+                    resultset.next();
+                    
+                    Punch p2 = getPunch(resultset.getInt("id"));
+                    id = p2.ID();
+                }
                 
-                    String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
-                    PreparedStatement pstmt = connection.prepareStatement(query);
-                    
-                    Timestamp ts = Timestamp.valueOf(p.getOriginalTimeStamp());   
-                    
-                    pstmt.setString(1,p.getBadgeID());
-                    pstmt.setTimestamp(2,ts);
-                    pstmt.setInt(3,p.getTerminalID());
-                    pstmt.setInt(4,p.getEventType().ordinal());
-                
-                }catch (Exception e) { e.printStackTrace(); }
-            }   
-        }
-        else{
-            try{
-                
-                    String query = "INSERT INTO event (badgeid, originaltimestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
-                    PreparedStatement pstmt = connection.prepareStatement(query);
-                    
-                    Timestamp ts = Timestamp.valueOf(p.getOriginalTimeStamp());   
-                    
-                    pstmt.setString(1,p.getBadgeID());
-                    pstmt.setTimestamp(2,ts);
-                    pstmt.setInt(3,p.getTerminalID());
-                    pstmt.setInt(4,p.getEventType().ordinal());
-                    
-                }catch (Exception e) { e.printStackTrace(); }
-        }
-        
-        Punch p1 = getPunch(p.ID());
-        id = p1.ID();
-        
+            }catch (Exception e) { e.printStackTrace(); }
+        }          
         return id;
     }
     

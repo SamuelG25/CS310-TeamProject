@@ -14,11 +14,12 @@ public class TAS {
         
         if (db.isConnected())System.out.println("Connected");
         Badge b1 = db.getBadge("4E6E296E");
-        Punch p1 = db.getPunch(1358);
+        Punch p1 = db.getPunch(103);
         Shift s2 = db.getShift(1);
         Department d1 = db.getDepartment(1);
         
-        System.out.println(d1.getId());
+        
+        System.out.println(db.insertPunch(p1));
         
         
         
