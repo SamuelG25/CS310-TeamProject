@@ -282,9 +282,11 @@ public class TASDatabase {
                 keys = resultset.getString("id");
                 description = resultset.getString("description");
                 terminalid = resultset.getString("terminalid");
+                resultset.close();
             }
             
         pstmt.close();
+        
         }catch (Exception e) { e.printStackTrace(); }
         
     Department d1 = new Department(description,terminalid,keys);
@@ -301,26 +303,21 @@ public class TASDatabase {
         
         if (p.getTerminalID() == d1.getTerminalid()|| p.getTerminalID() == 0){
             try {
-
+                
                 String query = "INSERT INTO event (badgeid, timestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
-                PreparedStatement pstmt = connection.prepareStatement(query);
-
+                PreparedStatement pstmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                
                 pstmt.setString(1, p.getBadgeID());
                 pstmt.setTimestamp(2, Timestamp.valueOf(p.getOriginalTimeStamp()));
                 pstmt.setInt(3, p.getTerminalID());
                 pstmt.setInt(4, p.getEventType().ordinal());
 
                 int rows = pstmt.executeUpdate();
-
-                if ( rows == 1 ) {
-                    
-                    ResultSet resultset = pstmt.getResultSet();
-                    resultset.next();
-                    
-                    Punch p2 = getPunch(resultset.getInt("id"));
-                    id = p2.ID();
-                }
                 
+                if ( rows == 1 ) {
+                    ResultSet resultset = pstmt.getGeneratedKeys();
+                    if (resultset.next()) {id = resultset.getInt(1);}
+                }
             }catch (Exception e) { e.printStackTrace(); }
         }          
         return id;
