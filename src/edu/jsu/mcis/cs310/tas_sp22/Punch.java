@@ -27,14 +27,16 @@ public class Punch {
         
     }
     
-    public Punch(int terminalid, Badge b1, int eventtype){
+    public Punch(int terminalid, Badge b1, int eventtype) {
+
+        this.badgeID = b1.getBadgeId();
+        this.terminalID = terminalid;
+
+        PunchType[] values = PunchType.values();
+
+        this.eventType = values[eventtype];
         
-    this.badgeID = b1.getBadgeId();
-    this.terminalID = terminalid;
-    
-    PunchType[] values = PunchType.values();
-    
-    this.eventType = values[eventtype];
+        this.originalTimeStamp = LocalDateTime.now();
     
     }
     

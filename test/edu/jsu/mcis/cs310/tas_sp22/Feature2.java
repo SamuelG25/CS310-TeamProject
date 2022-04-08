@@ -71,6 +71,8 @@ public class Feature2 {
         /* Insert Punch Into Database */
         
         int punchid = db.insertPunch(p1);
+        
+        System.err.println("New ID: " + punchid);
 		
         /* Retrieve New Punch */
         

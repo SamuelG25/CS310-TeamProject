@@ -229,35 +229,44 @@ public class TASDatabase {
         return getShift(shiftid);
     }
     
-    public Punch  getPunch(int punch){
+    public Punch getPunch(int punchid) {
         
-        LinkedHashMap <String, String > result = new LinkedHashMap<>();
+        Punch punch = null;
         
         try {
-                String query = "SELECT * FROM event WHERE id=?";
-                PreparedStatement pstmt = connection.prepareStatement(query);
-                pstmt.setInt(1, punch);
-                
-                 boolean hasresults = pstmt.execute();
             
-                    if ( hasresults ){
-                        ResultSet resultset = pstmt.getResultSet();
-                        resultset.next();
-                        
-                        result.put("badgeid", resultset.getString("badgeid"));
-                        result.put("terminalid", resultset.getString("terminalid"));
-                        result.put("timestamp", resultset.getString("timestamp"));
-                        result.put("eventtypeid", resultset.getString("eventtypeid"));
-                        
-                        resultset.close();
-                    }
+            String query = "SELECT * FROM event WHERE id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, punchid);
+
+            boolean hasresults = pstmt.execute();
+
+            if ( hasresults ) {
                 
+                ResultSet resultset = pstmt.getResultSet();
+                
+                if (resultset.next()) {
+        
+                    LinkedHashMap<String, String> result = new LinkedHashMap<>();
+
+                    result.put("badgeid", resultset.getString("badgeid"));
+                    result.put("terminalid", resultset.getString("terminalid"));
+                    result.put("timestamp", resultset.getString("timestamp"));
+                    result.put("eventtypeid", resultset.getString("eventtypeid"));
+                    
+                    punch = new Punch(result);
+
+                    resultset.close();
+                    
+                }
+                
+            }
+
                 
         } catch (Exception e) { e.printStackTrace(); }
         
+        return punch;
         
-    Punch p1 = new Punch(result);
-    return p1;
     }
     
     public Department getDepartment(int id){
@@ -301,7 +310,7 @@ public class TASDatabase {
         Employee e1 = getEmployee(b1);
         Department d1 = getDepartment(e1.getDepType());
         
-        if (p.getTerminalID() == d1.getTerminalid()|| p.getTerminalID() == 0){
+        if (p.getTerminalID() == d1.getTerminalid() || p.getTerminalID() == 0){
             try {
                 
                 String query = "INSERT INTO event (badgeid, timestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";
@@ -315,8 +324,10 @@ public class TASDatabase {
                 int rows = pstmt.executeUpdate();
                 
                 if ( rows == 1 ) {
+                    
                     ResultSet resultset = pstmt.getGeneratedKeys();
                     if (resultset.next()) {id = resultset.getInt(1);}
+                    
                 }
             }catch (Exception e) { e.printStackTrace(); }
         }          
