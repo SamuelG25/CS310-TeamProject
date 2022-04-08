@@ -34,21 +34,13 @@ public class TASDatabase {
             System.err.println("*** ERROR: MUST SPECIFY ADDRESS/USERNAME/PASSWORD BEFORE OPENING DATABASE CONNECTION ***");
         
         else {
-        
             try {
-
                 String url = "jdbc:mysql://" + a + "/tas_sp22_v1?autoReconnect=true&useSSL=false&zeroDateTimeBehavior=EXCEPTION&serverTimezone=America/Chicago";
-                
-
                 c = DriverManager.getConnection(url, u, p);
-
             }
             catch (Exception e) { e.printStackTrace(); }
-        
         }
-        
         return c;
-        
     }
     
     public boolean isConnected() {
@@ -58,12 +50,9 @@ public class TASDatabase {
         try {
             
             if ( !(connection == null) )
-                
-                result = !(connection.isClosed());
-            
-        }
+                result = !(connection.isClosed()); 
+            }
         catch (Exception e) { e.printStackTrace(); }
-        
         return result;
      
     }
@@ -211,20 +200,21 @@ public class TASDatabase {
         String Id = b1.getBadgeId();
         
         try {
-                String query = "SELECT * FROM employee WHERE badgeid=?";
-                PreparedStatement pstmt = connection.prepareStatement(query);
-                pstmt.setString(1, Id);
             
-                boolean hasresults = pstmt.execute();
-            
-                    if ( hasresults ){
-                        ResultSet resultset = pstmt.getResultSet();
-                        resultset.next();
-                        shiftid = resultset.getInt("shiftid");
-                        resultset.close( );
-                    } 
+            String query = "SELECT * FROM employee WHERE badgeid=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, Id);
+
+            boolean hasresults = pstmt.execute();
+
+            if ( hasresults ){
                 
-               
+                ResultSet resultset = pstmt.getResultSet();
+                resultset.next();
+                shiftid = resultset.getInt("shiftid");
+                resultset.close( );
+                
+                } 
             } catch (Exception e) { e.printStackTrace(); }
         return getShift(shiftid);
     }
@@ -257,16 +247,10 @@ public class TASDatabase {
                     punch = new Punch(result);
 
                     resultset.close();
-                    
                 }
-                
-            }
-
-                
+            }   
         } catch (Exception e) { e.printStackTrace(); }
-        
         return punch;
-        
     }
     
     public Department getDepartment(int id){
@@ -311,6 +295,7 @@ public class TASDatabase {
         Department d1 = getDepartment(e1.getDepType());
         
         if (p.getTerminalID() == d1.getTerminalid() || p.getTerminalID() == 0){
+            
             try {
                 
                 String query = "INSERT INTO event (badgeid, timestamp, terminalid, eventtypeid) VALUES (?,?,?,?)";

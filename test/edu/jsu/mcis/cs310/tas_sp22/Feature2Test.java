@@ -23,7 +23,7 @@ public class Feature2Test {
        
        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
        
-       Punch p1 = new Punch (105, db.getBadge("398B1563"),)
+       Punch p1 = new Punch (105, db.getBadge("398B1563"), 1);
        
    }
     

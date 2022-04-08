@@ -21,7 +21,7 @@ public class Punch {
         this.terminalID = Integer.parseInt(param.get("terminalid"));
         this.eventType = PunchType.values()[Integer.parseInt(param.get("eventtypeid"))];
         this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).withNano(0);
         this.adjustedTimeStamp = null;
         this.ID = 0;
         
@@ -36,7 +36,7 @@ public class Punch {
 
         this.eventType = values[eventtype];
         
-        this.originalTimeStamp = LocalDateTime.now();
+        this.originalTimeStamp = LocalDateTime.now().withNano(0);
     
     }
     
