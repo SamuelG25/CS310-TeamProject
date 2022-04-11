@@ -4,6 +4,10 @@ package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.json.simple.JSONValue;
 
 
 public class TAS {
@@ -30,4 +34,30 @@ public class TAS {
         
     }
     
+    public static String getPunchListAsJSON(ArrayList<Punch> dailypunchlist){
+        
+        ArrayList<HashMap<String, String>> jsonData = new ArrayList<>(); 
+        
+        for (int i = 0; i < dailypunchlist.size(); i++){
+            
+            Punch punch = dailypunchlist.get(i);
+            HashMap<String, String>   punchData = new HashMap<>();
+            
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+            
+            punchData.put("id", String.valueOf(punch.ID())); 
+            punchData.put("badgeid", String.valueOf(punch.getBadgeID()));
+            punchData.put("terminalid", String.valueOf(punch.getTerminalID()));
+            punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmessage()));
+            punchData.put("originaltimestamp", String.valueOf(dtf.format(punch.getOriginalTimestamp())));
+            punchData.put("adjustedtimestamp", String.valueOf(dtf.format(punch.getAdjustedTimeStamp())));
+            punchData.put("punchtype", String.valueOf(punch.getEventType().toString()));
+            
+            jsonData.add(punchData);
+        }
+        
+        
+        String json = JSONValue.toJSONString(jsonData);
+        return json;
+    }
 }

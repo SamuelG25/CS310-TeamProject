@@ -64,7 +64,7 @@ public class Feature2 {
         /* Get Punch Properties */
         
         String badgeid = p1.getBadgeID();
-        ots = p1.getOriginalTimeStamp();
+        ots = p1.getOriginalTimestamp();
         int terminalid = p1.getTerminalID();
         PunchType punchtype = p1.getEventType();
 		
@@ -82,7 +82,7 @@ public class Feature2 {
 
         assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimeStamp();
+        rts = p2.getOriginalTimestamp();
         
         assertEquals(terminalid, p2.getTerminalID());
         assertEquals(punchtype, p2.getEventType());
@@ -123,7 +123,7 @@ public class Feature2 {
         /* Get Punch Properties */
         
         String badgeid = p1.getBadgeID();
-        ots = p1.getOriginalTimeStamp();
+        ots = p1.getOriginalTimestamp();
         int terminalid = p1.getTerminalID();
         PunchType punchtype = p1.getEventType();
 		
@@ -139,7 +139,7 @@ public class Feature2 {
 
         assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimeStamp();
+        rts = p2.getOriginalTimestamp();
         
         assertEquals(terminalid, p2.getTerminalID());
         assertEquals(punchtype, p2.getEventType());
@@ -163,7 +163,7 @@ public class Feature2 {
         /* Get Punch Properties */
         
         String badgeid = p1.getBadgeID();
-        ots = p1.getOriginalTimeStamp();
+        ots = p1.getOriginalTimestamp();
         int terminalid = p1.getTerminalID();
         PunchType punchtype = p1.getEventType();
 		
@@ -179,7 +179,7 @@ public class Feature2 {
 
         assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimeStamp();
+        rts = p2.getOriginalTimestamp();
         
         assertEquals(terminalid, p2.getTerminalID());
         assertEquals(punchtype, p2.getEventType());
@@ -203,7 +203,7 @@ public class Feature2 {
         /* Get Punch Properties */
         
         String badgeid = p1.getBadgeID();
-        ots = p1.getOriginalTimeStamp();
+        ots = p1.getOriginalTimestamp();
         int terminalid = p1.getTerminalID();
         PunchType punchtype = p1.getEventType();
 		
@@ -219,7 +219,7 @@ public class Feature2 {
 
         assertEquals(badgeid, p2.getBadgeID());
         
-        rts = p2.getOriginalTimeStamp();
+        rts = p2.getOriginalTimestamp();
         
         assertEquals(terminalid, p2.getTerminalID());
         assertEquals(punchtype, p2.getEventType());

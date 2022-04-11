@@ -5,10 +5,13 @@ import java.util.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
+import java.util.ArrayList; 
+import java.util.HashMap; 
 
 public class TASDatabase {
     
@@ -159,40 +162,37 @@ public class TASDatabase {
     }
     
     public Shift getShift(int id){
-        
-        
+       
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
         
         try {
-                String query = "SELECT * FROM shift WHERE id=? ";
-                PreparedStatement pstmt = connection.prepareStatement(query);
-                pstmt.setInt (1, id);
-            
-            
-                boolean hasresults = pstmt.execute();
-            
-                    if ( hasresults ){
-                        ResultSet resultset = pstmt.getResultSet();
-                        resultset.next();
-                    
-                        results.put("description",resultset.getString("description"));
-                        results.put("shiftstart",resultset.getString("shiftstart"));
-                        results.put("shiftstop",resultset.getString("shiftstop"));
-                        results.put("roundinterval",resultset.getString("roundinterval"));
-                        results.put("graceperiod",resultset.getString("graceperiod"));
-                        results.put("dockpenalty",resultset.getString("dockpenalty"));
-                        results.put("lunchstart",resultset.getString("lunchstart"));
-                        results.put("lunchstop",resultset.getString("lunchstop"));
-                        results.put("lunchthreshold",resultset.getString("lunchthreshold"));
-                    
-                        resultset.close();
-                    }
+            String query = "SELECT * FROM shift WHERE id=? ";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt (1, id);
+
+
+            boolean hasresults = pstmt.execute();
+
+                if ( hasresults ){
+                    ResultSet resultset = pstmt.getResultSet();
+                    resultset.next();
+
+                    results.put("description",resultset.getString("description"));
+                    results.put("shiftstart",resultset.getString("shiftstart"));
+                    results.put("shiftstop",resultset.getString("shiftstop"));
+                    results.put("roundinterval",resultset.getString("roundinterval"));
+                    results.put("graceperiod",resultset.getString("graceperiod"));
+                    results.put("dockpenalty",resultset.getString("dockpenalty"));
+                    results.put("lunchstart",resultset.getString("lunchstart"));
+                    results.put("lunchstop",resultset.getString("lunchstop"));
+                    results.put("lunchthreshold",resultset.getString("lunchthreshold"));
+
+                    resultset.close();
+                }
             }catch (Exception e) { e.printStackTrace(); }
         
-        
-        
-    Shift s1 = new Shift(results);
-    return s1;
+        Shift s1 = new Shift(results);
+        return s1;
     }
     
     public Shift getShift(Badge b1){
@@ -302,7 +302,7 @@ public class TASDatabase {
                 PreparedStatement pstmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                 
                 pstmt.setString(1, p.getBadgeID());
-                pstmt.setTimestamp(2, Timestamp.valueOf(p.getOriginalTimeStamp()));
+                pstmt.setTimestamp(2, Timestamp.valueOf(p.getOriginalTimestamp()));
                 pstmt.setInt(3, p.getTerminalID());
                 pstmt.setInt(4, p.getEventType().ordinal());
 
@@ -355,5 +355,32 @@ public class TASDatabase {
             }catch (Exception ex) {ex.printStackTrace();}
         
     return punches;
+    }
+    
+    public static String getPunchListAsJSON(ArrayList<Punch> dailypunchlist){
+        
+        ArrayList<HashMap<String, String>> jsonData = null; 
+        
+        for (int i = 0; i < dailypunchlist.size(); i++){
+            
+            Punch punch = dailypunchlist.get(i);
+            HashMap<String, String>   punchData = new HashMap<>();
+            
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
+            
+            punchData.put("id", String.valueOf(punch.ID())); 
+            punchData.put("badgeid", String.valueOf(punch.getBadgeID()));
+            punchData.put("terminalid", String.valueOf(punch.getTerminalID()));
+            punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmessage()));
+            punchData.put("originaltimestamp", String.valueOf(dtf.format(punch.getOriginalTimestamp())));
+            punchData.put("adjustedtimestamp", String.valueOf(dtf.format(punch.getAdjustedTimeStamp())));
+            punchData.put("punchtype", String.valueOf(punch.getEventType().toString()));
+            
+            jsonData.add(punchData);
+        }
+        
+        
+        String json = JSONValue.toJSONString(jsonData);
+        return json;
     }
 }

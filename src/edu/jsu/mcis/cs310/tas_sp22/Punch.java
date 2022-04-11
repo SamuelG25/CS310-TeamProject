@@ -214,12 +214,16 @@ public class Punch {
         return ID;
     }
 
-    public LocalDateTime getOriginalTimeStamp() {
+    public LocalDateTime getOriginalTimestamp() {
         return originalTimeStamp;
     }
 
     public LocalDateTime getAdjustedTimeStamp() {
         return adjustedTimeStamp;
+    }
+    
+    public String getAdjustmessage(){
+        return adjustMessage;
     }
     
     
