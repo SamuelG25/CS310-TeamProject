@@ -10,8 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.*;
-import java.util.ArrayList; 
-import java.util.HashMap; 
+
 
 public class TASDatabase {
     
@@ -357,30 +356,5 @@ public class TASDatabase {
     return punches;
     }
     
-    public static String getPunchListAsJSON(ArrayList<Punch> dailypunchlist){
-        
-        ArrayList<HashMap<String, String>> jsonData = null; 
-        
-        for (int i = 0; i < dailypunchlist.size(); i++){
-            
-            Punch punch = dailypunchlist.get(i);
-            HashMap<String, String>   punchData = new HashMap<>();
-            
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
-            
-            punchData.put("id", String.valueOf(punch.ID())); 
-            punchData.put("badgeid", String.valueOf(punch.getBadgeID()));
-            punchData.put("terminalid", String.valueOf(punch.getTerminalID()));
-            punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmessage()));
-            punchData.put("originaltimestamp", String.valueOf(dtf.format(punch.getOriginalTimestamp())));
-            punchData.put("adjustedtimestamp", String.valueOf(dtf.format(punch.getAdjustedTimeStamp())));
-            punchData.put("punchtype", String.valueOf(punch.getEventType().toString()));
-            
-            jsonData.add(punchData);
-        }
-        
-        
-        String json = JSONValue.toJSONString(jsonData);
-        return json;
-    }
+    
 }

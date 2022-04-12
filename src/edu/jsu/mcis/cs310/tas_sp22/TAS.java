@@ -49,8 +49,8 @@ public class TAS {
             punchData.put("badgeid", String.valueOf(punch.getBadgeID()));
             punchData.put("terminalid", String.valueOf(punch.getTerminalID()));
             punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmessage()));
-            punchData.put("originaltimestamp", String.valueOf(dtf.format(punch.getOriginalTimestamp())));
-            punchData.put("adjustedtimestamp", String.valueOf(dtf.format(punch.getAdjustedTimeStamp())));
+            punchData.put("originaltimestamp", String.valueOf(dtf.format(punch.getOriginalTimestamp()).toUpperCase()));
+            punchData.put("adjustedtimestamp", String.valueOf(dtf.format(punch.getAdjustedTimeStamp()).toUpperCase()));
             punchData.put("punchtype", String.valueOf(punch.getEventType().toString()));
             
             jsonData.add(punchData);
