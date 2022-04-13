@@ -23,8 +23,7 @@ public class Punch {
         this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).withNano(0);
         this.adjustedTimeStamp = null;
-        this.ID = 0;
-        
+        //this.ID = Integer.parseInt(param.get("id"));
     }
     
     public Punch(int terminalid, Badge b1, int eventtype) {
@@ -210,7 +209,7 @@ public class Punch {
         return eventType;
     }
     
-    public int ID(){
+    public int getID(){
         return ID;
     }
 

@@ -17,9 +17,10 @@ public class TAS {
         
         TASDatabase db = new TASDatabase();
         
-        Punch p2 = db.getPunch(6898);
+        Punch p2 = db.getPunch(4943);
         
-        System.err.println(p2.printOriginal());
+        System.out.println(p2.getID());
+        
         
         /*if (db.isConnected())System.out.println("Connected");
         Badge b1 = db.getBadge("4E6E296E");
@@ -41,11 +42,11 @@ public class TAS {
         for (int i = 0; i < dailypunchlist.size(); i++){
             
             Punch punch = dailypunchlist.get(i);
-            HashMap<String, String>   punchData = new HashMap<>();
+            HashMap<String, String> punchData = new HashMap<>();
             
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE MM/dd/yyyy HH:mm:ss");
             
-            punchData.put("id", String.valueOf(punch.ID())); 
+            punchData.put("id", String.valueOf(punch.getID())); 
             punchData.put("badgeid", String.valueOf(punch.getBadgeID()));
             punchData.put("terminalid", String.valueOf(punch.getTerminalID()));
             punchData.put("adjustmenttype", String.valueOf(punch.getAdjustmessage()));

@@ -186,10 +186,9 @@ public class TASDatabase {
                     results.put("lunchstop",resultset.getString("lunchstop"));
                     results.put("lunchthreshold",resultset.getString("lunchthreshold"));
 
-                    resultset.close();
+                    resultset.close();   
                 }
             }catch (Exception e) { e.printStackTrace(); }
-        
         Shift s1 = new Shift(results);
         return s1;
     }
@@ -238,6 +237,7 @@ public class TASDatabase {
         
                     LinkedHashMap<String, String> result = new LinkedHashMap<>();
 
+                    result.put("id", resultset.getString("id"));
                     result.put("badgeid", resultset.getString("badgeid"));
                     result.put("terminalid", resultset.getString("terminalid"));
                     result.put("timestamp", resultset.getString("timestamp"));
