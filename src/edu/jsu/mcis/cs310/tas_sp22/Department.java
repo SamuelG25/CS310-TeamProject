@@ -1,14 +1,14 @@
 package edu.jsu.mcis.cs310.tas_sp22;
 
 public class Department {
-    String description;
-    int Terminalid;
-    int id;
+    private String description;
+    private int terminalid;
+    private int id;
     
-    public Department(String des, String Termid, String id){
+    public Department(String des, String termid, String id){
         
         this.description = des;
-        this.Terminalid = Integer.parseInt(Termid);
+        this.terminalid = Integer.parseInt(termid);
         this.id = Integer.parseInt(id);
     }
 
@@ -17,7 +17,7 @@ public class Department {
     }
 
     public int getTerminalid() {
-        return Terminalid;
+        return terminalid;
     }
     
     @Override
@@ -29,7 +29,7 @@ public class Department {
         
         s.append('#').append(id).append(" ");
         s.append("(").append(description).append(")");
-        s.append(": ").append("terminalid: ").append(Terminalid);
+        s.append(": ").append("terminalid: ").append(terminalid);
         
 
         return s.toString();

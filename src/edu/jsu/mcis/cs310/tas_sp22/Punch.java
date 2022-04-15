@@ -1,17 +1,14 @@
 package edu.jsu.mcis.cs310.tas_sp22;
 
-import java.security.Timestamp;
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-
 
 public class Punch {
     private String badgeID;
     private int terminalID;
     private PunchType eventType;
-    private int ID;
+    private int id;
     private LocalDateTime originalTimeStamp;
     private LocalDateTime adjustedTimeStamp;
     private String adjustMessage;
@@ -23,7 +20,7 @@ public class Punch {
         this.originalTimeStamp = LocalDateTime.parse(param.get("timestamp"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).withNano(0);
         this.adjustedTimeStamp = null;
-        //this.ID = Integer.parseInt(param.get("id"));
+        this.id = Integer.parseInt(param.get("id"));
     }
     
     public Punch(int terminalid, Badge b1, int eventtype) {
@@ -36,6 +33,7 @@ public class Punch {
         this.eventType = values[eventtype];
         
         this.originalTimeStamp = LocalDateTime.now().withNano(0);
+        this.id = 0;
     
     }
     
@@ -70,17 +68,17 @@ public class Punch {
             int interval = s.getInterval();
             int adjustedMinute = 0;
                 
-                if(minute % interval !=0){
-                    if ((minute % interval) < (interval/2)){
-                        adjustedMinute = Math.round(( minute/interval)* interval);
+                if(minute % interval != 0){
+                    if ((minute % interval) < (interval / 2)){
+                        adjustedMinute = Math.round(( minute / interval) * interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
                     }
                     
                     else{
-                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedMinute = Math.round(((minute/interval) * interval) + interval);
                     
-                    if (adjustedMinute == 60){
+                    if (adjustedMinute == 60) {
                         adjustedTimeStamp =originalTimeStamp.plusHours(1).withMinute(0).withSecond(0);
                         adjustMessage = "Interval Round";
                     }
@@ -126,15 +124,15 @@ public class Punch {
                 int interval = s.getInterval();
                 int adjustedMinute = 0;
                 
-                if(minute % interval !=0){
-                    if ((minute % interval) < (interval/2)){
-                        adjustedMinute = Math.round(( minute/interval)* interval);
+                if(minute % interval != 0){
+                    if ((minute % interval) < (interval / 2)){
+                        adjustedMinute = Math.round(( minute / interval) * interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
                     }
                     else{
                     
-                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedMinute = Math.round(((minute / interval) * interval) + interval);
                     adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                     adjustMessage = "Interval Round";
                     }
@@ -175,15 +173,15 @@ public class Punch {
                 int interval = s.getInterval();
                 int adjustedMinute = 0;
                 
-                if(minute % interval !=0){
-                    if ((minute % interval) < (interval/2)){
-                        adjustedMinute = Math.round(( minute/interval)* interval);
+                if(minute % interval != 0){
+                    if ((minute % interval) < (interval / 2)){
+                        adjustedMinute = Math.round(( minute / interval) * interval);
                         adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                         adjustMessage = "Interval Round";
                     }
                     else{
                     
-                    adjustedMinute = Math.round(((minute/interval) *interval) + interval);
+                    adjustedMinute = Math.round(((minute / interval) * interval) + interval);
                     adjustedTimeStamp = originalTimeStamp.withMinute(adjustedMinute).withSecond(0);
                     adjustMessage = "Interval Round";
                     }
@@ -210,7 +208,7 @@ public class Punch {
     }
     
     public int getID(){
-        return ID;
+        return id;
     }
 
     public LocalDateTime getOriginalTimestamp() {

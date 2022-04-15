@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Shift {
     private String description;
-    private LocalTime shiftstart,shiftstop,lunchstart,lunchstop;
+    private LocalTime shiftstart, shiftstop, lunchstart, lunchstop;
     private int interval, period, penalty;
 
     public Shift(LinkedHashMap<String,String> param ) {

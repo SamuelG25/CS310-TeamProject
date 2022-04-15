@@ -13,7 +13,7 @@ public class Employee {
     private int employeetypeid, departmentid, id;
     private String shiftid;
     private LocalDateTime active, inactive;
-    private String inactiveString,activeString;
+    private String inactiveString, activeString;
     
     public Employee(LinkedHashMap<String, String> params)
     {
@@ -35,12 +35,13 @@ public class Employee {
         }
         else {
             this.inactive = LocalDateTime.parse(params.get("inactive"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));} 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } 
             
-            this.activeString = "none";
+        this.activeString = "none";
     }
     
-    private LocalDate getLocalDate(LocalDateTime active){
+    private LocalDate getLocalDate(LocalDateTime active) {
         LocalDate date = active.toLocalDate();
         return date;
     }

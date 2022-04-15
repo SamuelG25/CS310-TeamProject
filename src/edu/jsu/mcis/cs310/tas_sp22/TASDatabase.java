@@ -1,4 +1,3 @@
-
 package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.util.*;
@@ -81,20 +80,20 @@ public class TASDatabase {
                
             } catch (Exception e) { e.printStackTrace(); }
     
-    Badge b1 = new Badge(badgeid,desc);
-    return b1;        
+        Badge b1 = new Badge(badgeid,desc);
+        
+        return b1;       
+        
     }
     
-    public Employee getEmployee(int Id){
+    public Employee getEmployee(int id){
         
         LinkedHashMap <String, String > results = new LinkedHashMap<>();
-        
-        
         
         try {
             String query = "SELECT * FROM employee WHERE id=?";
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setInt(1, Id);
+            pstmt.setInt(1, id);
             
             boolean hasresults = pstmt.execute();
             
@@ -119,8 +118,8 @@ public class TASDatabase {
         } catch (Exception e) { e.printStackTrace(); }
     
         
-    Employee Emp = new Employee(results);
-    return Emp;        
+        return new Employee(results);
+       
     }
     
     
@@ -133,7 +132,7 @@ public class TASDatabase {
         try {
             String query = "SELECT * FROM employee WHERE badgeid=?";
             PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString (1, Id);
+            pstmt.setString(1, Id);
             
             boolean hasresults = pstmt.execute();
             
@@ -156,8 +155,8 @@ public class TASDatabase {
                 }    
         } catch (Exception e) { e.printStackTrace(); }
         
-    Employee Emp = new Employee(results);
-    return Emp;
+        return new Employee(results);
+
     }
     
     public Shift getShift(int id){
@@ -169,10 +168,10 @@ public class TASDatabase {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setInt (1, id);
 
-
             boolean hasresults = pstmt.execute();
 
-                if ( hasresults ){
+                if ( hasresults ) {
+                    
                     ResultSet resultset = pstmt.getResultSet();
                     resultset.next();
 
@@ -189,8 +188,9 @@ public class TASDatabase {
                     resultset.close();   
                 }
             }catch (Exception e) { e.printStackTrace(); }
-        Shift s1 = new Shift(results);
-        return s1;
+        
+        return new Shift(results);
+    
     }
     
     public Shift getShift(Badge b1){
@@ -214,7 +214,9 @@ public class TASDatabase {
                 
                 } 
             } catch (Exception e) { e.printStackTrace(); }
+        
         return getShift(shiftid);
+        
     }
     
     public Punch getPunch(int punchid) {
@@ -249,7 +251,9 @@ public class TASDatabase {
                 }
             }   
         } catch (Exception e) { e.printStackTrace(); }
+        
         return punch;
+        
     }
     
     public Department getDepartment(int id){
@@ -277,12 +281,13 @@ public class TASDatabase {
                 resultset.close();
             }
             
-        pstmt.close();
+            pstmt.close();
         
-        }catch (Exception e) { e.printStackTrace(); }
+        }
+        catch (Exception e) { e.printStackTrace(); }
         
-    Department d1 = new Department(description,terminalid,keys);
-    return d1;    
+        return new Department(description, terminalid, keys);
+   
     }
     
     public int insertPunch(Punch p){
@@ -314,18 +319,20 @@ public class TASDatabase {
                     
                 }
             }catch (Exception e) { e.printStackTrace(); }
-        }          
+        }     
+        
         return id;
+        
     }
     
     
-    public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date){
+    public ArrayList<Punch> getDailyPunchList(Badge badge, LocalDate date) {
         
         ArrayList<Punch> punches = new ArrayList();
         
         try{
             String query = "SELECT *, DATE(`timestamp`) AS tsdate FROM event "
-                    + "WHERE badgeid =? HAVING tsdate =? ORDER BY `timestamp`;";
+                    + "WHERE badgeid = ? HAVING tsdate = ? ORDER BY `timestamp`";
             
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, badge.getBadgeId());
@@ -333,28 +340,30 @@ public class TASDatabase {
             
             boolean hasresults = pstmt.execute(); 
             
-                if ( hasresults ){
-                
-                    ResultSet resultset = pstmt.getResultSet();
-                    resultset.next();
-                
-                        do{
+            if ( hasresults ) {
+
+                ResultSet resultset = pstmt.getResultSet();
+                resultset.next();
+
+                do {
+
+                    LinkedHashMap<String,String> param = new LinkedHashMap();
+                    param.put("badgeid", resultset.getString("badgeid"));
+                    param.put("terminalid", resultset.getString("terminalid"));
+                    param.put("timestamp", resultset.getString("timestamp"));
+                    param.put("eventtypeid", resultset.getString("eventtypeid"));
+
+                    punches.add(new Punch(param));
+
+                } while(resultset.next());
                     
-                            LinkedHashMap<String,String> param = new LinkedHashMap();
-                            param.put("badgeid", resultset.getString("badgeid"));
-                            param.put("terminalid", resultset.getString("terminalid"));
-                            param.put("timestamp", resultset.getString("timestamp"));
-                            param.put("eventtypeid", resultset.getString("eventtypeid"));
-                   
-                            punches.add(new Punch(param));
-                            
-                        }while(resultset.next());
-                }
-                
-            }catch (Exception ex) {ex.printStackTrace();}
+            }
+
+        }
+        catch (Exception ex) {ex.printStackTrace();}
         
-    return punches;
+        return punches;
+        
     }
-    
-    
+  
 }

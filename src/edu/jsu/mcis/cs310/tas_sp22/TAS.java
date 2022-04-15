@@ -1,5 +1,3 @@
-//Ruri Figueroa, Samuel Goldthreate, Bless Vincent
-
 package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.time.LocalDate;
@@ -9,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.json.simple.JSONValue;
 
+//Ruri Figueroa, Samuel Goldthreate, Bless Vincent
 
 public class TAS {
 
