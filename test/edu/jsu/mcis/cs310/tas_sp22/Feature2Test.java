@@ -2,8 +2,6 @@ package edu.jsu.mcis.cs310.tas_sp22;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.junit.*;
@@ -34,10 +32,16 @@ public class Feature2Test {
        Department d2 = db.getDepartment(2);
        Department d1 = db.getDepartment(1);
        
-       assertEquals("id: 4; de")
-       assertEquals("id: 3; description: (Warehouse); terminalid: 103", d3.toString());
-       assertEquals("id: 2; description: (Cleaning); terminalid: 107 ", d2.toString());
-       assertEquals("id: 1; decription: (Assembly); terminalid: 103", d1.toString());
+       assertEquals("#10 (Maintenance): terminalid: 104", d10.toString());
+       assertEquals("#9 (Tool and Die): terminalid: 104", d9.toString());
+       assertEquals("#8 (Shipping): terminalid: 107", d8.toString());
+       assertEquals("#7 (Press): terminalid: 104", d7.toString());
+       assertEquals("#6 (Office): terminalid: 102", d6.toString());
+       assertEquals("#5 (Hafting): terminalid: 105", d5.toString());
+       assertEquals("#4 (Grinding): terminalid: 104", d4.toString());
+       assertEquals("#3 (Warehouse): terminalid: 106", d3.toString());
+       assertEquals("#2 (Cleaning): terminalid: 107", d2.toString());
+       assertEquals("#1 (Assembly): terminalid: 103", d1.toString());
     }
     
     @Test
