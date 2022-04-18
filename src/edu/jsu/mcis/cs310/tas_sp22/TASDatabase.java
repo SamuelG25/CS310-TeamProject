@@ -348,6 +348,7 @@ public class TASDatabase {
                 do {
 
                     LinkedHashMap<String,String> param = new LinkedHashMap();
+                    param.put("id", resultset.getString("id"));
                     param.put("badgeid", resultset.getString("badgeid"));
                     param.put("terminalid", resultset.getString("terminalid"));
                     param.put("timestamp", resultset.getString("timestamp"));
