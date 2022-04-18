@@ -1,4 +1,4 @@
-zpackage edu.jsu.mcis.cs310.tas_sp22;
+package edu.jsu.mcis.cs310.tas_sp22;
 
 public class Badge {
     private String description, badgeId;
